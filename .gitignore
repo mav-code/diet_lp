@@ -1,0 +1,5 @@
+CLAUDE.md
+data_local.py
+!data_local.py.example
+__pycache__/
+*.pyc
