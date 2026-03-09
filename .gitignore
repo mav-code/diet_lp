@@ -1,4 +1,5 @@
 CLAUDE.md
+.claude/
 data_local.py
 !data_local.py.example
 __pycache__/
