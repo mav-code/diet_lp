@@ -85,22 +85,21 @@ NUTRIENT SUMMARY
 
 ```
 diet-lp/
-├── main.py                # solver, settings, and output
-├── data.py                # example food database (checked into git)
-└── data_local.py.example  # template for a personal food database (optional)
+├── main.py          # solver, settings, and output
+└── foods/
+    ├── stigler.py         # Stigler (1945) commodity set
+    ├── usda.py            # additional USDA SR Legacy ingredients
+    ├── recipes.py         # example recipes
+    └── local_example.py   # template for a personal food file (optional)
 ```
 
-`data_local.py` is gitignored and does not exist after cloning — the tool runs fine without it, using the foods in `data.py`.
+Every `.py` file in `foods/` is loaded automatically. Drop any file defining `INGREDIENTS` and/or `RECIPES` lists there and it will be picked up on the next run — no changes to `main.py` needed.
 
 ### Personal food database (optional)
 
-To use your own foods instead of or in addition to the examples in `data.py`, create `data_local.py`:
+To add your own foods, copy the template `local_example.py` and fill it in.
 
-```bash
-cp data_local.py.example data_local.py
-```
-
-Both files are loaded automatically whenever they exist — no changes to `main.py` needed. `data_local.py` only needs to define `INGREDIENTS` and/or `RECIPES` lists using the same dict format as `data.py`.
+Files matching `foods/local_*.py` are gitignored (except `local_example.py`), so your personal data stays local. Your file only needs to define `INGREDIENTS` and/or `RECIPES` using the same dict format as the other files in `foods/`.
 
 ### Settings
 
@@ -116,7 +115,7 @@ All nutritional targets and bounds live at the top of `main.py`.
 
 ### Food database
 
-`data.py` contains example food group lists as a starting point. Add your own foods in `data_local.py` (see above). Each entry is a Python dict.
+The `foods/` directory contains the food database. Each entry is a Python dict.
 
 **Ingredients** — nutrient values per 100g; the solver variable is grams consumed:
 
@@ -172,9 +171,7 @@ To cap or fix a food's quantity, add `min_amount` and/or `max_amount` to its ent
 
 ### Including and excluding food groups
 
-Food groups are loaded from both `data.py` and `data_local.py` at the top of `main.py`. To exclude a group entirely, comment out the corresponding import lines there.
-
-To add a new food group (e.g. `STAPLES`), define it as a named list in either data file and add the matching import lines in `main.py`.
+To exclude a file's foods entirely, remove or rename the file in `foods/`. To add a new themed group (e.g. `foods/staples.py`), create a new file there with `INGREDIENTS` and/or `RECIPES` lists — it will be picked up automatically.
 
 ## Notes
 

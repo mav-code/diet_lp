@@ -1,6 +1,6 @@
 CLAUDE.md
 .claude/
-data_local.py
-!data_local.py.example
+foods/local_*.py
+!foods/local_example.py
 __pycache__/
 *.pyc

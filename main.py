@@ -9,30 +9,33 @@ and micronutrient minimums.
 Usage:
     python main.py
 
-Food groups are loaded from data.py (example, public) and data_local.py
-(personal, gitignored). Either file may be absent. See README for details.
+All .py files in the foods/ subdirectory are loaded automatically.
+Drop any file defining INGREDIENTS and/or RECIPES lists into foods/ and
+it will be picked up on the next run. See README for details.
 """
+
+import glob
+import os
+import importlib.util
 
 from ortools.linear_solver import pywraplp
 
 # ------------------------------------------------------------------------------
-# Food group imports
-# ------------------------------------------------------------------------------
-# data.py       — example food database, checked into git
-# data_local.py — personal food database, gitignored (optional)
-#
-# Lists from both files are merged. Either file may be absent.
+# Food loading
 # ------------------------------------------------------------------------------
 
-def _load(module, name):
-    try:
-        import importlib
-        return getattr(importlib.import_module(module), name, [])
-    except ImportError:
-        return []
+def _load_foods_dir():
+    ingredients, recipes = [], []
+    foods_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "foods")
+    for path in sorted(glob.glob(os.path.join(foods_dir, "*.py"))):
+        spec = importlib.util.spec_from_file_location("_food", path)
+        mod = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(mod)
+        ingredients += getattr(mod, "INGREDIENTS", [])
+        recipes     += getattr(mod, "RECIPES", [])
+    return ingredients, recipes
 
-INGREDIENTS = _load("data", "INGREDIENTS") + _load("data_local", "INGREDIENTS")
-RECIPES     = _load("data", "RECIPES")     + _load("data_local", "RECIPES")
+INGREDIENTS, RECIPES = _load_foods_dir()
 
 # ------------------------------------------------------------------------------
 # Settings

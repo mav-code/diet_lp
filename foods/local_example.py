@@ -1,21 +1,18 @@
 """
-diet_lp/data_local.py
+diet_lp/foods/local_example.py
 
-Personal food database — gitignored, not checked into the public repo.
+Template for a personal food database.
 
-Add your own ingredients and recipes here using the same format as data.py.
-Both files are loaded automatically; you do not need to modify main.py.
+Copy this file to foods/local.py (or any name starting with local_) and add
+your own entries. Files named local_*.py are gitignored; this example is the
+exception and stays tracked so it's available after cloning.
 
+Both INGREDIENTS and RECIPES are optional — omit either list if unused.
 For INGREDIENTS, nutrient values are per 100g and the solver variable is grams.
 For RECIPES, nutrient values are per 1 serving and the solver variable is servings.
 
-See data.py for full documentation and examples.
+See foods/usda.py or foods/stigler.py for full examples.
 """
-
-# ------------------------------------------------------------------------------
-# INGREDIENTS
-# Nutrient values per 100g. Sources: USDA FoodData Central SR Legacy.
-# ------------------------------------------------------------------------------
 
 INGREDIENTS = [
     # Add your personal ingredients here, e.g.:
@@ -32,12 +29,6 @@ INGREDIENTS = [
     #     },
     # },
 ]
-
-
-# ------------------------------------------------------------------------------
-# RECIPES
-# Nutrient values per 1 serving.
-# ------------------------------------------------------------------------------
 
 RECIPES = [
     # Add your personal recipes here, e.g.:
