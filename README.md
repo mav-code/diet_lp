@@ -99,8 +99,6 @@ Every `.py` file in `foods/` is loaded automatically. Drop any file defining `IN
 
 To add your own foods, copy the template `local_example.py` and fill it in.
 
-Files matching `foods/local_*.py` are gitignored (except `local_example.py`), so your personal data stays local. Your file only needs to define `INGREDIENTS` and/or `RECIPES` using the same dict format as the other files in `foods/`.
-
 ### Settings
 
 All nutritional targets and bounds live at the top of `main.py`.
@@ -172,8 +170,3 @@ To cap or fix a food's quantity, add `min_amount` and/or `max_amount` to its ent
 ### Including and excluding food groups
 
 To exclude a file's foods entirely, remove or rename the file in `foods/`. To add a new themed group (e.g. `foods/staples.py`), create a new file there with `INGREDIENTS` and/or `RECIPES` lists — it will be picked up automatically.
-
-## Notes
-
-- The solver will concentrate quantities on a small number of nutritionally efficient foods unless you add `max_amount` caps to individual foods. That's expected in LP.
-- As far as I know you can't actually optimize nutrition in this way, so don't think you're solving anything. This is for fun and education and testing but I wouldn't build my life around it.
