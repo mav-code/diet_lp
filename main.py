@@ -52,7 +52,7 @@ CALORIE_MAX = 1795
 MACRO_TARGETS = {
     "carbs":   122,   # g  (range 20–225)
     "fat":      80,   # g  (range 61–100)
-    "protein": 148,   # g  (range 71–225)
+    "protein": 203,   # g  (range 71–225, adjusted upwards based on advice)
 }
 
 # Macro hard bounds (the solver may not exceed/fall below these regardless)
