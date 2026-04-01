@@ -198,87 +198,124 @@ def print_results(solver, status, food_vars, foods, over_vars, under_vars):
         print("Try relaxing calorie bounds, macro bounds, or micronutrient minimums.")
         return
 
-    print("=" * 60)
-    print("FOODS IN SOLUTION")
-    print("=" * 60)
-
-    # Collect nutrients for summary
-    totals = {k: 0.0 for k in [
+    nutrient_keys = [
         "calories", "carbs", "fat", "protein",
         "sodium", "cholesterol", "fiber",
         "vitamin_c", "calcium", "iron", "potassium", "magnesium",
         "zinc", "b12", "folate", "thiamine", "riboflavin", "niacin",
-    ]}
+    ]
 
+    # --- Collect active foods, compute gram weight, sort descending ---
+    active = []
     for var, food in zip(food_vars, foods):
         amt = var.solution_value()
         if amt < 0.01:
             continue
         is_recipe = food.get("unit") == "1 serving"
         scale = 1.0 if is_recipe else 1.0 / 100.0
-        if is_recipe:
-            print(f"  {food['name']}: {amt:.2f} servings")
-        else:
-            print(f"  {food['name']}: {amt:.1f}g")
-        for key in totals:
-            totals[key] += food["nutrients"].get(key, 0.0) * amt * scale
+        weight_g = amt * food.get("grams", 100) if is_recipe else amt
+        nutrients = {k: food["nutrients"].get(k, 0.0) * amt * scale
+                     for k in nutrient_keys}
+        active.append(dict(name=food["name"], amt=amt, is_recipe=is_recipe,
+                           weight_g=weight_g, nutrients=nutrients))
+    active.sort(key=lambda x: x["weight_g"], reverse=True)
 
+    totals = {k: sum(a["nutrients"][k] for a in active) for k in nutrient_keys}
+
+    # --- Table helpers ---
+    # Foods are rows; nutrients are columns.
+    # Two tables: main nutrients (col_w=9) and micronutrients (col_w=7).
+    NAME_W = 20
+    AMT_W  = 8
+
+    def print_table(col_w, cols):
+        """
+        cols: list of (key, header, unit, target_str)
+        Prints header, one row per food, a TOTAL row, and a Target row.
+        """
+        sep = "-" * (NAME_W + 1 + AMT_W + len(cols) * (col_w + 1))
+
+        # Header line 1: column abbreviations
+        h1 = f"{'':>{NAME_W}} {'':>{AMT_W}}"
+        for _, header, _, _ in cols:
+            h1 += f" {header:>{col_w}}"
+        print(h1)
+
+        # Header line 2: units
+        h2 = f"{'':>{NAME_W}} {'Amount':>{AMT_W}}"
+        for _, _, unit, _ in cols:
+            h2 += f" {unit:>{col_w}}"
+        print(h2)
+
+        print(sep)
+
+        for a in active:
+            amt_str = f"{a['amt']:.1f}srv" if a["is_recipe"] else f"{a['amt']:.0f}g"
+            line = f"{a['name'][:NAME_W]:<{NAME_W}} {amt_str:>{AMT_W}}"
+            for key, _, _, _ in cols:
+                line += f" {a['nutrients'][key]:{col_w}.1f}"
+            print(line)
+
+        print(sep)
+
+        total_line = f"{'TOTAL':<{NAME_W}} {'':>{AMT_W}}"
+        for key, _, _, _ in cols:
+            total_line += f" {totals[key]:{col_w}.1f}"
+        print(total_line)
+
+        target_line = f"{'Target':<{NAME_W}} {'':>{AMT_W}}"
+        for _, _, _, target_str in cols:
+            target_line += f" {target_str:>{col_w}}"
+        print(target_line)
+
+        print(sep)
+
+    # --- Table 1: calories, macros, constrained nutrients ---
+    lo_c, hi_c = MACRO_BOUNDS["carbs"]
+    lo_f, hi_f = MACRO_BOUNDS["fat"]
+    lo_p, hi_p = MACRO_BOUNDS["protein"]
+    main_cols = [
+        ("calories",    "Cal",     "kcal", f"{CALORIE_MIN}-{CALORIE_MAX}"),
+        ("carbs",       "Carbs",   "g",    f"{lo_c}-{hi_c}"),
+        ("fat",         "Fat",     "g",    f"{lo_f}-{hi_f}"),
+        ("protein",     "Protein", "g",    f"{lo_p}-{hi_p}"),
+        ("sodium",      "Sodium",  "mg",   f"max {SODIUM_MAX}"),
+        ("cholesterol", "Cholest", "mg",   f"max {CHOLESTEROL_MAX}"),
+        ("fiber",       "Fiber",   "g",    f"min {FIBER_MIN}"),
+    ]
+    print_table(col_w=9, cols=main_cols)
+
+    # --- Table 2: micronutrients ---
     print()
-    print("=" * 60)
-    print("NUTRIENT SUMMARY")
-    print("=" * 60)
+    micro_cols = [
+        ("vitamin_c",  "Vit C",   "mg",  f">{MICRONUTRIENT_MINS['vitamin_c']}"),
+        ("calcium",    "Calcium", "mg",  f">{MICRONUTRIENT_MINS['calcium']}"),
+        ("iron",       "Iron",    "mg",  f">{MICRONUTRIENT_MINS['iron']}"),
+        ("potassium",  "Potass.", "mg",  f">{MICRONUTRIENT_MINS['potassium']}"),
+        ("magnesium",  "Magnes.", "mg",  f">{MICRONUTRIENT_MINS['magnesium']}"),
+        ("zinc",       "Zinc",    "mg",  f">{MICRONUTRIENT_MINS['zinc']}"),
+        ("b12",        "B12",     "mcg", f">{MICRONUTRIENT_MINS['b12']}"),
+        ("folate",     "Folate",  "mcg", f">{MICRONUTRIENT_MINS['folate']}"),
+        ("thiamine",   "Thiamin", "mg",  f">{MICRONUTRIENT_MINS['thiamine']}"),
+        ("riboflavin", "Riboflv", "mg",  f">{MICRONUTRIENT_MINS['riboflavin']}"),
+        ("niacin",     "Niacin",  "mg",  f">{MICRONUTRIENT_MINS['niacin']}"),
+    ]
+    print_table(col_w=7, cols=micro_cols)
 
-    def row(label, actual, target_str, unit):
-        print(f"  {label:<22} {actual:>8.1f} {unit:<5}  (target: {target_str})")
-
-    # Calories
-    row("Calories", totals["calories"],
-        f"{CALORIE_MIN}–{CALORIE_MAX}", "kcal")
-
+    # --- Macro deviation summary ---
     print()
-    print("  -- Macros --")
     for macro in ["carbs", "fat", "protein"]:
-        lo, hi = MACRO_BOUNDS[macro]
         target = MACRO_TARGETS[macro]
         over  = over_vars[macro].solution_value()
         under = under_vars[macro].solution_value()
-        deviation = f"(+{over:.1f} / -{under:.1f} from target {target}g)"
-        row(macro.capitalize(), totals[macro], f"{lo}–{hi}g", "g")
-        print(f"  {'':22} {deviation}")
+        print(f"  {macro.capitalize():<10} target {target}g   +{over:.1f} / -{under:.1f}")
 
-    print()
-    print("  -- Constrained nutrients --")
-    row("Sodium",      totals["sodium"],      f"max {SODIUM_MAX}",      "mg")
-    row("Cholesterol", totals["cholesterol"], f"max {CHOLESTEROL_MAX}", "mg")
-    row("Fiber",       totals["fiber"],       f"min {FIBER_MIN}",       "g")
-
-    print()
-    print("  -- Micronutrients --")
-    micro_labels = {
-        "vitamin_c":  ("Vitamin C",  "mg"),
-        "calcium":    ("Calcium",    "mg"),
-        "iron":       ("Iron",       "mg"),
-        "potassium":  ("Potassium",  "mg"),
-        "magnesium":  ("Magnesium",  "mg"),
-        "zinc":       ("Zinc",       "mg"),
-        "b12":        ("Vitamin B12","mcg"),
-        "folate":     ("Folate",     "mcg"),
-        "thiamine":   ("Thiamine",   "mg"),
-        "riboflavin": ("Riboflavin", "mg"),
-        "niacin":     ("Niacin",     "mg"),
-    }
-    for key, (label, unit) in micro_labels.items():
-        minimum = MICRONUTRIENT_MINS[key]
-        row(label, totals[key], f"min {minimum}", unit)
-
-    print()
     obj_val = sum(
         MACRO_WEIGHTS[m][0] * over_vars[m].solution_value() +
         MACRO_WEIGHTS[m][1] * under_vars[m].solution_value()
         for m in MACRO_TARGETS
     )
-    print(f"  Objective (weighted macro deviation): {obj_val:.3f}")
-    print("=" * 60)
+    print(f"\n  Objective (weighted macro deviation): {obj_val:.3f}")
 
 
 # ------------------------------------------------------------------------------
