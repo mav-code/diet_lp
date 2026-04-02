@@ -2,9 +2,11 @@
 
 Given a set of foods and nutritional targets, the solver finds the quantities of each food that minimize deviation from your macro targets while satisfying hard constraints on calories, sodium, cholesterol, fiber, and a set of micronutrients.
 
-This is a toy for exploring Google's Linear Programming solver [OR-Tools](https://developers.google.com/optimization) (GLOP solver) by expanding on their implementation of the [Stigler diet problem](https://developers.google.com/optimization/lp/stigler_diet), towards a functionality resembling that of [Eat This Much](https://www.eatthismuch.com/). 
+This is a toy for exploring Google's Linear Programming solver [OR-Tools](https://developers.google.com/optimization) (GLOP solver) by expanding on their implementation of the [Stigler diet problem](https://developers.google.com/optimization/lp/stigler_diet), towards a functionality resembling that of [Eat This Much](https://www.eatthismuch.com/).
 
-The example database contains all the foods in the Stigler problem, plus a few more. The tool's results are not serious (let alone optimal) nutritional advice, just as the original Stigler problem wasn't; but it moves in that direction.
+It's also a toy problem for testing genAI capabilites. The majority of the code and database entries are written by Claude Code and reviewed by myself.
+
+The example database contains all the foods in the Stigler problem, plus many more. The tool's results are not serious (let alone optimal) nutritional advice, just as the original Stigler problem wasn't; but it moves in that direction. Neither Claude Code nor myself are trustworthy nutrition experts.
 
 The specific number targets in here are just whatever I happen to have been playing around with. Customize them for your own needs.
 
