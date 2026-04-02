@@ -230,21 +230,23 @@ def print_results(solver, status, food_vars, foods, over_vars, under_vars):
 
     def print_table(col_w, cols):
         """
-        cols: list of (key, header, unit, target_str)
+        cols: list of (key, header, unit, target_str), or None to insert a '|' divider.
         Prints header, one row per food, a TOTAL row, and a Target row.
         """
-        sep = "-" * (NAME_W + 1 + AMT_W + len(cols) * (col_w + 1))
+        real_cols = [c for c in cols if c is not None]
+        n_dividers = sum(1 for c in cols if c is None)
+        sep = "-" * (NAME_W + 1 + AMT_W + len(real_cols) * (col_w + 1) + n_dividers * 2)
 
-        # Header line 1: column abbreviations
-        h1 = f"{'':>{NAME_W}} {'':>{AMT_W}}"
-        for _, header, _, _ in cols:
-            h1 += f" {header:>{col_w}}"
+        # Header line 1: "Amount" label + column abbreviations
+        h1 = f"{'':>{NAME_W}} {'Amount':>{AMT_W}}"
+        for c in cols:
+            h1 += " |" if c is None else f" {c[1]:>{col_w}}"
         print(h1)
 
-        # Header line 2: units
-        h2 = f"{'':>{NAME_W}} {'Amount':>{AMT_W}}"
-        for _, _, unit, _ in cols:
-            h2 += f" {unit:>{col_w}}"
+        # Header line 2: column units
+        h2 = f"{'':>{NAME_W}} {'':>{AMT_W}}"
+        for c in cols:
+            h2 += " |" if c is None else f" {c[2]:>{col_w}}"
         print(h2)
 
         print(sep)
@@ -252,20 +254,20 @@ def print_results(solver, status, food_vars, foods, over_vars, under_vars):
         for a in active:
             amt_str = f"{a['amt']:.1f}srv" if a["is_recipe"] else f"{a['amt']:.0f}g"
             line = f"{a['name'][:NAME_W]:<{NAME_W}} {amt_str:>{AMT_W}}"
-            for key, _, _, _ in cols:
-                line += f" {a['nutrients'][key]:{col_w}.1f}"
+            for c in cols:
+                line += " |" if c is None else f" {a['nutrients'][c[0]]:{col_w}.1f}"
             print(line)
 
         print(sep)
 
         total_line = f"{'TOTAL':<{NAME_W}} {'':>{AMT_W}}"
-        for key, _, _, _ in cols:
-            total_line += f" {totals[key]:{col_w}.1f}"
+        for c in cols:
+            total_line += " |" if c is None else f" {totals[c[0]]:{col_w}.1f}"
         print(total_line)
 
         target_line = f"{'Target':<{NAME_W}} {'':>{AMT_W}}"
-        for _, _, _, target_str in cols:
-            target_line += f" {target_str:>{col_w}}"
+        for c in cols:
+            target_line += " |" if c is None else f" {c[3]:>{col_w}}"
         print(target_line)
 
         print(sep)
@@ -276,9 +278,11 @@ def print_results(solver, status, food_vars, foods, over_vars, under_vars):
     lo_p, hi_p = MACRO_BOUNDS["protein"]
     main_cols = [
         ("calories",    "Cal",     "kcal", f"{CALORIE_MIN}-{CALORIE_MAX}"),
+        None,
         ("carbs",       "Carbs",   "g",    f"{lo_c}-{hi_c}"),
         ("fat",         "Fat",     "g",    f"{lo_f}-{hi_f}"),
         ("protein",     "Protein", "g",    f"{lo_p}-{hi_p}"),
+        None,
         ("sodium",      "Sodium",  "mg",   f"max {SODIUM_MAX}"),
         ("cholesterol", "Cholest", "mg",   f"max {CHOLESTEROL_MAX}"),
         ("fiber",       "Fiber",   "g",    f"min {FIBER_MIN}"),
@@ -288,17 +292,17 @@ def print_results(solver, status, food_vars, foods, over_vars, under_vars):
     # --- Table 2: micronutrients ---
     print()
     micro_cols = [
-        ("vitamin_c",  "Vit C",   "mg",  f">{MICRONUTRIENT_MINS['vitamin_c']}"),
-        ("calcium",    "Calcium", "mg",  f">{MICRONUTRIENT_MINS['calcium']}"),
-        ("iron",       "Iron",    "mg",  f">{MICRONUTRIENT_MINS['iron']}"),
-        ("potassium",  "Potass.", "mg",  f">{MICRONUTRIENT_MINS['potassium']}"),
-        ("magnesium",  "Magnes.", "mg",  f">{MICRONUTRIENT_MINS['magnesium']}"),
-        ("zinc",       "Zinc",    "mg",  f">{MICRONUTRIENT_MINS['zinc']}"),
-        ("b12",        "B12",     "mcg", f">{MICRONUTRIENT_MINS['b12']}"),
-        ("folate",     "Folate",  "mcg", f">{MICRONUTRIENT_MINS['folate']}"),
-        ("thiamine",   "Thiamin", "mg",  f">{MICRONUTRIENT_MINS['thiamine']}"),
-        ("riboflavin", "Riboflv", "mg",  f">{MICRONUTRIENT_MINS['riboflavin']}"),
-        ("niacin",     "Niacin",  "mg",  f">{MICRONUTRIENT_MINS['niacin']}"),
+        ("vitamin_c",  "Vit C",   "mg",  f"min {MICRONUTRIENT_MINS['vitamin_c']}"),
+        ("calcium",    "Calcium", "mg",  f"min {MICRONUTRIENT_MINS['calcium']}"),
+        ("iron",       "Iron",    "mg",  f"min {MICRONUTRIENT_MINS['iron']}"),
+        ("potassium",  "Potass.", "mg",  f"min {MICRONUTRIENT_MINS['potassium']}"),
+        ("magnesium",  "Magnes.", "mg",  f"min {MICRONUTRIENT_MINS['magnesium']}"),
+        ("zinc",       "Zinc",    "mg",  f"min {MICRONUTRIENT_MINS['zinc']}"),
+        ("b12",        "B12",     "mcg", f"min {MICRONUTRIENT_MINS['b12']}"),
+        ("folate",     "Folate",  "mcg", f"min {MICRONUTRIENT_MINS['folate']}"),
+        ("thiamine",   "Thiamin", "mg",  f"min {MICRONUTRIENT_MINS['thiamine']}"),
+        ("riboflavin", "Riboflv", "mg",  f"min {MICRONUTRIENT_MINS['riboflavin']}"),
+        ("niacin",     "Niacin",  "mg",  f"min {MICRONUTRIENT_MINS['niacin']}"),
     ]
     print_table(col_w=7, cols=micro_cols)
 
