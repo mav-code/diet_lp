@@ -139,7 +139,7 @@ def solve(foods):
     def nutrient_total(key):
         terms = []
         for var, food in zip(food_vars, foods):
-            val = food["nutrients"].get(key, 0.0)
+            val = food["nutrients"].get(key) or 0.0
             if food.get("unit", "100g") == "1 serving":
                 scale = 1.0
             else:
@@ -231,7 +231,7 @@ def print_results(solver, status, food_vars, foods, over_vars, under_vars):
         is_recipe = food.get("unit") == "1 serving"
         scale = 1.0 if is_recipe else 1.0 / 100.0
         weight_g = amt * food.get("grams", 100) if is_recipe else amt
-        nutrients = {k: food["nutrients"].get(k, 0.0) * amt * scale
+        nutrients = {k: (food["nutrients"].get(k) or 0.0) * amt * scale
                      for k in nutrient_keys}
         active.append(dict(name=food["name"], amt=amt, is_recipe=is_recipe,
                            weight_g=weight_g, nutrients=nutrients))
