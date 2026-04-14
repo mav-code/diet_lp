@@ -8,8 +8,10 @@ your own entries. Files named local_*.py are gitignored; this example is the
 exception and stays tracked so it's available after cloning.
 
 Both INGREDIENTS and RECIPES are optional — omit either list if unused.
-For INGREDIENTS, nutrient values are per 100g and the solver variable is grams.
-For RECIPES, nutrient values are per 1 serving and the solver variable is servings.
+The list names are organizational conventions; what actually controls solver
+behavior is each entry's "unit" field:
+  "100g"      — nutrients per 100g; solver variable is grams consumed.
+  "1 serving" — nutrients per serving; solver variable is servings consumed.
 
 See foods/usda.py or foods/stigler.py for full examples.
 """

@@ -12,6 +12,11 @@ Usage:
 All .py files in the foods/ subdirectory are loaded automatically.
 Drop any file defining INGREDIENTS and/or RECIPES lists into foods/ and
 it will be picked up on the next run. See README for details.
+
+Note: the INGREDIENTS/RECIPES list names are organizational conventions only.
+What actually controls solver behavior is each entry's "unit" field:
+  "100g"      — nutrients are per 100g; solver variable is grams consumed.
+  "1 serving" — nutrients are per serving; solver variable is servings consumed.
 """
 
 import glob
@@ -24,7 +29,12 @@ from ortools.linear_solver import pywraplp
 # Food loading
 # ------------------------------------------------------------------------------
 
+_VALID_UNITS = {"100g", "1 serving"}
+
 def _load_foods_dir():
+    # INGREDIENTS and RECIPES are organizational conventions; what actually
+    # drives solver behavior is each entry's "unit" field. Both lists are
+    # concatenated here and treated identically from this point on.
     ingredients, recipes = [], []
     foods_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "foods")
     for path in sorted(glob.glob(os.path.join(foods_dir, "*.py"))):
@@ -33,6 +43,13 @@ def _load_foods_dir():
         spec.loader.exec_module(mod)
         ingredients += getattr(mod, "INGREDIENTS", [])
         recipes     += getattr(mod, "RECIPES", [])
+    all_foods = ingredients + recipes
+    for food in all_foods:
+        if food.get("unit") not in _VALID_UNITS:
+            raise ValueError(
+                f"Food {food.get('name')!r} has invalid unit {food.get('unit')!r}. "
+                f"Must be one of: {_VALID_UNITS}"
+            )
     return ingredients, recipes
 
 INGREDIENTS, RECIPES = _load_foods_dir()
