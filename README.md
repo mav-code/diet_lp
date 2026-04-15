@@ -8,7 +8,7 @@ It's also a toy problem for testing genAI capabilites. The majority of the code 
 
 The example database contains all the foods in the Stigler problem, plus many more, and is set up to allow you to enter more foods. The tool's results are not serious (let alone optimal) nutritional advice, just as the original Stigler problem wasn't; but it moves in that direction. Neither Claude Code nor myself are trustworthy nutrition experts.
 
-The specific number targets in here are just whatever I happen to have been playing around with. Customize them for your own needs.
+The specific number targets in here are just whatever I happen to have been playing around with. Customize them for your own needs in `settings.py`.
 
 ## Requirements
 
@@ -82,7 +82,10 @@ Target                         min 90 min 1000   min 8 min 3400 min 420  min 11 
 
 ```
 diet-lp/
-├── main.py          # solver, settings, and output
+├── main.py          # solver and output
+├── settings.py      # all nutritional targets and bounds — edit this to configure
+├── loader.py        # food file loading and deduplication
+├── validate.py      # input validation
 └── foods/
     ├── stigler.py         # Stigler (1945) commodity set
     ├── usda.py            # additional USDA SR Legacy ingredients
@@ -90,80 +93,52 @@ diet-lp/
     └── local_example.py   # template for a personal food file (optional)
 ```
 
-Every `.py` file in `foods/` is loaded automatically. Drop any file defining `INGREDIENTS` and/or `RECIPES` lists there and it will be picked up on the next run — no changes to `main.py` needed.
-
-### Personal food database (optional)
-
-To add your own foods, copy the template `local_example.py` and fill it in.
+Every `.py` file in `foods/` is loaded automatically. Drop any file defining `INGREDIENTS` and/or `RECIPES` lists there and it will be picked up on the next run — no changes to any other file needed. For instance, you can put more foods in `local_example.py`, or a renamed copy of it.
 
 ### Settings
 
-All nutritional targets and bounds live at the top of `main.py`.
+All nutritional targets and bounds live in `settings.py`:
 
 - **Calorie bounds** — hard min/max
 - **Macro targets** — the solver minimizes weighted deviation from these
 - **Macro bounds** — hard min/max per macro regardless of target
-- **Macro weights** — tune how hard the solver tries to avoid over/undershooting each macro; asymmetric weights are supported (e.g. penalize undershooting protein more than overshooting)
+- **Macro weights** — tune over/undershoot penalties per macro; asymmetric weights are supported
 - **Sodium, cholesterol** — hard upper bounds
 - **Fiber** — hard lower bound
 - **Micronutrient minimums** — hard lower bounds for Vitamin C, Calcium, Iron, Potassium, Magnesium, Zinc, B12, Folate, Thiamine, Riboflavin, and Niacin
 
 ### Food database
 
-The `foods/` directory contains the food database. Each entry is a Python dict.
+The `foods/` directory contains the food database. Each entry is a Python dict. The `INGREDIENTS`/`RECIPES` list names are organizational conventions only — what actually controls solver behavior is the `"unit"` field:
 
-**Ingredients** — nutrient values per 100g; the solver variable is grams consumed:
-
-```python
-{
-    "name": "Chicken breast, raw",
-    "unit": "100g",
-    "grams": 100,
-    "nutrients": {
-        "calories": 120, "carbs": 0, "fat": 2.6, "protein": 22.5,
-        "sodium": 74, "cholesterol": 73, "fiber": 0,
-        # ... micronutrients
-    },
-}
-```
-
-**Recipes** — nutrient values per serving; the solver variable is number of servings:
+- `"unit": "100g"` — nutrients per 100g; solver variable is grams consumed
+- `"unit": "1 serving"` — nutrients per serving; solver variable is servings consumed
 
 ```python
-{
-    "name": "Lentil vegetable soup (1 serving ~400g)",
-    "unit": "1 serving",
-    "grams": 400,  # informational only
-    "nutrients": {
-        "calories": 220, "carbs": 38.0, "fat": 3.5, "protein": 13.0,
-        # ...
-    },
-}
+# Ingredient
+{"name": "Chicken breast, raw", "unit": "100g", "grams": 100,
+ "link": "https://...",  # optional
+ "nutrients": {"calories": 120, "carbs": 0, "fat": 2.6, "protein": 22.5, ...}}
+
+# Recipe
+{"name": "Lentil soup (1 serving ~400g)", "unit": "1 serving", "grams": 400,
+ "link": "https://...",  # optional recipe URL
+ "nutrients": {"calories": 220, "carbs": 38.0, "fat": 3.5, "protein": 13.0, ...}}
 ```
 
 Nutrient values can be sourced from [USDA FoodData Central](https://fdc.nal.usda.gov/).
 
 #### Per-food bounds
 
-To cap or fix a food's quantity, add `min_amount` and/or `max_amount` to its entry:
-
 ```python
-# Limit tuna to ~1 can/day due to mercury
-{
-    "name": "Tuna, canned in water",
-    "max_amount": 85,  # grams
-    # ...
-}
-
-# Fix 200g of oats as a daily staple; optimize the rest around it
-{
-    "name": "Oats, rolled, dry",
-    "min_amount": 200,
-    "max_amount": 200,
-    # ...
-}
+{"name": "Tuna, canned in water", "max_amount": 85, ...}   # ~1 can/day mercury limit
+{"name": "Oats, rolled, dry", "min_amount": 200, "max_amount": 200, ...}  # fixed staple
 ```
+
+#### Validation and deduplication
+
+On load, all entries are validated (malformed entries abort the run with a clear error message). Entries that are nutritionally identical but differently named are merged into a single solver variable with a combined name (e.g. `"Bluefruit / Redfruit"`), reflecting that either option satisfies the solution. Same-name entries with conflicting nutrient data are an error.
 
 ### Including and excluding food groups
 
-To exclude a file's foods entirely, remove or rename the file in `foods/`. To add a new themed group (e.g. `foods/staples.py`), create a new file there with `INGREDIENTS` and/or `RECIPES` lists — it will be picked up automatically.
+To exclude a file's foods entirely, remove or rename it in `foods/`. To add a new themed group (e.g. `foods/staples.py`), create a file there with `INGREDIENTS` and/or `RECIPES` lists.

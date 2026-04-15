@@ -20,9 +20,9 @@ def validate_foods(foods):
     """
     Returns a list of error strings. An empty list means all entries are valid.
     Collects all errors rather than stopping at the first.
+    Note: duplicate-name conflicts are handled upstream by deduplicate_foods().
     """
     errors = []
-    seen_names = {}
 
     for i, food in enumerate(foods):
         # Use name for error messages if available, else fall back to index.
@@ -33,13 +33,6 @@ def validate_foods(foods):
         # --- name ---
         if not isinstance(raw_name, str) or not raw_name.strip():
             errors.append(f"{label}: 'name' must be a non-empty string")
-        else:
-            if raw_name in seen_names:
-                errors.append(
-                    f"{label}: duplicate name (also at index {seen_names[raw_name]})"
-                )
-            else:
-                seen_names[raw_name] = i
 
         # --- unit ---
         if food.get("unit") not in VALID_UNITS:

@@ -21,7 +21,7 @@ What actually controls solver behavior is each entry's "unit" field:
 
 from ortools.linear_solver import pywraplp
 
-from loader import load_foods_dir
+from loader import load_foods_dir, deduplicate_foods
 from validate import validate_foods
 from settings import (
     CALORIE_MIN, CALORIE_MAX,
@@ -268,6 +268,13 @@ if __name__ == "__main__":
 
     if not all_foods:
         print("No foods loaded. Check the foods/ directory.")
+        exit(1)
+
+    all_foods, errors = deduplicate_foods(all_foods)
+    if errors:
+        print(f"Found {len(errors)} name conflict(s) in food data — aborting:\n")
+        for err in errors:
+            print(f"  {err}")
         exit(1)
 
     errors = validate_foods(all_foods)
