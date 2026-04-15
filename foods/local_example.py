@@ -22,6 +22,7 @@ INGREDIENTS = [
     #     "name": "My food",
     #     "unit": "100g",
     #     "grams": 100,
+    #     "link": "",          # optional: product page, label scan, etc.
     #     "nutrients": {
     #         "calories": 0, "carbs": 0, "fat": 0, "protein": 0,
     #         "sodium": 0, "cholesterol": 0, "fiber": 0,
@@ -38,6 +39,7 @@ RECIPES = [
     #     "name": "My recipe (1 serving ~300g)",
     #     "unit": "1 serving",
     #     "grams": 300,
+    #     "link": "",          # optional: recipe URL
     #     "nutrients": {
     #         "calories": 0, "carbs": 0, "fat": 0, "protein": 0,
     #         "sodium": 0, "cholesterol": 0, "fiber": 0,
