@@ -4,3 +4,5 @@ foods/local_*.py
 !foods/local_example.py
 __pycache__/
 *.pyc
+.env
+scratch.py

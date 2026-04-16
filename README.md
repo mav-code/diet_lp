@@ -4,19 +4,16 @@ Given a set of foods and nutritional targets, the solver finds the quantities of
 
 This is a toy for exploring Google's Linear Programming solver [OR-Tools](https://developers.google.com/optimization) (GLOP solver) by expanding on their implementation of the [Stigler diet problem](https://developers.google.com/optimization/lp/stigler_diet), towards a functionality resembling that of [Eat This Much](https://www.eatthismuch.com/).
 
-It's also a toy problem for testing genAI capabilites. The majority of the code and database entries are written by Claude Code and reviewed by myself.
-
-The example database contains all the foods in the Stigler problem, plus many more, and is set up to allow you to enter more foods. The tool's results are not serious (let alone optimal) nutritional advice, just as the original Stigler problem wasn't; but it moves in that direction. Neither Claude Code nor myself are trustworthy nutrition experts.
+The example database contains all the foods in the Stigler problem, plus many more, and is set up to allow you to enter more foods manually or even [fetch them](#usda-importer). The tool's results are not serious (let alone optimal) nutritional advice, just as the original Stigler problem wasn't; but it moves in that direction. Neither Claude Code nor myself are trustworthy nutrition experts, and I don't know which of us is worse.
 
 The specific number targets in here are just whatever I happen to have been playing around with. Customize them for your own needs in `settings.py`.
 
 ## Requirements
 
 - Python 3.8+
-- [OR-Tools](https://pypi.org/project/ortools/)
 
 ```bash
-pip install ortools
+pip install -r requirements.txt
 ```
 
 ## Usage
@@ -27,7 +24,7 @@ python3 main.py
 
 <details>
 
-<summary>Here's what the solution will look like if you don't edit anything.</summary>
+<summary>Here's what the solution will look like if you don't edit any targets in the [settings file](#settings), or add or remove any foods from the `foods` directory.</summary>
 
 ```
 Loaded 103 foods.
@@ -78,7 +75,11 @@ Target                         min 90 min 1000   min 8 min 3400 min 420  min 11 
   Objective (weighted macro deviation): 0.000
 ```
 </details>
+
 ## Structure
+
+<details>
+<summary>File tree</summary>
 
 ```
 diet-lp/
@@ -86,14 +87,19 @@ diet-lp/
 ├── settings.py      # all nutritional targets and bounds — edit this to configure
 ├── loader.py        # food file loading and deduplication
 ├── validate.py      # input validation
-└── foods/
-    ├── stigler.py         # Stigler (1945) commodity set
-    ├── usda.py            # additional USDA SR Legacy ingredients
-    ├── recipes.py         # example recipes
-    └── local_example.py   # template for a personal food file (optional)
+├── requirements.txt
+├── foods/
+│   ├── stigler.py         # Stigler (1945) commodity set
+│   ├── usda.py            # additional USDA SR Legacy ingredients
+│   ├── recipes.py         # example recipes
+│   └── local_example.py   # template for a personal food file (optional)
+└── tools/
+    └── usda_fetch.py      # interactive USDA FoodData Central importer
 ```
 
-Every `.py` file in `foods/` is loaded automatically. Drop any file defining `INGREDIENTS` and/or `RECIPES` lists there and it will be picked up on the next run — no changes to any other file needed. For instance, you can put more foods in `local_example.py`, or a renamed copy of it.
+</details>
+<br>
+Every `.py` file in `foods/` is loaded automatically. Drop any file defining `INGREDIENTS` and/or `RECIPES` lists there and it will be picked up on the next run — no changes to any other file needed. For instance, you can put more foods in `local_example.py`, or a renamed copy of it. Conversely, to exclude foods you could delete them or comment them out of these files.
 
 ### Settings
 
@@ -114,21 +120,26 @@ The `foods/` directory contains the food database. Each entry is a Python dict. 
 - `"unit": "100g"` — nutrients per 100g; solver variable is grams consumed
 - `"unit": "1 serving"` — nutrients per serving; solver variable is servings consumed
 
+<details>
+<summary>Examples</summary>
+
 ```python
 # Ingredient
 {"name": "Chicken breast, raw", "unit": "100g", "grams": 100,
- "link": "https://...",  # optional
  "nutrients": {"calories": 120, "carbs": 0, "fat": 2.6, "protein": 22.5, ...}}
 
 # Recipe
 {"name": "Lentil soup (1 serving ~400g)", "unit": "1 serving", "grams": 400,
- "link": "https://...",  # optional recipe URL
  "nutrients": {"calories": 220, "carbs": 38.0, "fat": 3.5, "protein": 13.0, ...}}
 ```
 
-Nutrient values can be sourced from [USDA FoodData Central](https://fdc.nal.usda.gov/).
+</details>
+<br>
+Nutrient values can be sourced from [USDA FoodData Central](https://fdc.nal.usda.gov/), or imported directly with `tools/usda_fetch.py` (see below).
 
 #### Per-food bounds
+
+You can specify minima and maxima for the solver to abide by:
 
 ```python
 {"name": "Tuna, canned in water", "max_amount": 85, ...}   # ~1 can/day mercury limit
@@ -139,6 +150,34 @@ Nutrient values can be sourced from [USDA FoodData Central](https://fdc.nal.usda
 
 On load, all entries are validated (malformed entries abort the run with a clear error message). Entries that are nutritionally identical but differently named are merged into a single solver variable with a combined name (e.g. `"Bluefruit / Redfruit"`), reflecting that either option satisfies the solution. Same-name entries with conflicting nutrient data are an error.
 
-### Including and excluding food groups
+### USDA importer
 
-To exclude a file's foods entirely, remove or rename it in `foods/`. To add a new themed group (e.g. `foods/staples.py`), create a file there with `INGREDIENTS` and/or `RECIPES` lists.
+This repo includes a helper tool, `tools/usda_fetch.py`, which looks up foods in [USDA FoodData Central](https://fdc.nal.usda.gov/) by name and generates ready-to-use INGREDIENTS entries. It always outputs per-100g entries.
+
+<details>
+<summary>Importer Setup and Use </summary>
+
+get a free API key at <https://fdc.nal.usda.gov/api-guide.html>, then add it to a `.env` file in the project root:
+
+```
+FDC_API_KEY=your_key_here
+```
+
+**Look up a single ingredient and print it in our data format:**
+```bash
+python3 tools/usda_fetch.py "chicken breast"
+```
+
+**Look up a single ingredient and append its return to a specified file destination:**
+```bash
+python3 tools/usda_fetch.py "chicken breast" --dest foods/usda.py
+```
+
+**Look up a batch of ingredients from a text file, one name per line:**
+```bash
+python3 tools/usda_fetch.py --batch queries.txt --dest foods/usda.py
+```
+
+Each flow is interactive: you pick from up to 10 search results, preview the generated entry, and accept or skip.
+
+</details>
