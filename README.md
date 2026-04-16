@@ -24,7 +24,8 @@ python3 main.py
 
 <details>
 
-<summary>Here's what the solution will look like if you don't edit any targets in the [settings file](#settings), or add or remove any foods from the `foods` directory.</summary>
+<summary>Here's what the solution will look like if you don't edit any targets in the <a href="#settings">settings file</a>, or add or remove any foods from the <code>foods</code> directory.</summary>
+
 
 ```
 Loaded 103 foods.
@@ -75,7 +76,7 @@ Target                         min 90 min 1000   min 8 min 3400 min 420  min 11 
   Objective (weighted macro deviation): 0.000
 ```
 </details>
-
+<br>
 ## Structure
 
 <details>
@@ -135,7 +136,6 @@ The `foods/` directory contains the food database. Each entry is a Python dict. 
 
 </details>
 <br>
-Nutrient values can be sourced from [USDA FoodData Central](https://fdc.nal.usda.gov/), or imported directly with `tools/usda_fetch.py` (see below).
 
 #### Per-food bounds
 
