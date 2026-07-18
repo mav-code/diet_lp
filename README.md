@@ -77,6 +77,7 @@ Target                         min 90 min 1000   min 8 min 3400 min 420  min 11 
 ```
 </details>
 <br>
+
 ## Structure
 
 <details>
