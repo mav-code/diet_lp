@@ -11,18 +11,29 @@ treated identically from this point on.
 
 import glob
 import os
-import importlib.util
 
 
 def load_foods_dir():
     ingredients, recipes = [], []
     foods_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "foods")
     for path in sorted(glob.glob(os.path.join(foods_dir, "*.py"))):
-        spec = importlib.util.spec_from_file_location("_food", path)
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
-        ingredients += getattr(mod, "INGREDIENTS", [])
-        recipes     += getattr(mod, "RECIPES", [])
+        # Compile fresh instead of importing: importlib can serve stale
+        # __pycache__ bytecode when a source edit lands within the same
+        # mtime second, silently ignoring the edit.
+        with open(path) as f:
+            source = f.read()
+        namespace = {}
+        exec(compile(source, path, "exec"), namespace)
+        mod_ingredients = namespace.get("INGREDIENTS", [])
+        mod_recipes     = namespace.get("RECIPES", [])
+        # Tag each entry with its source file so name conflicts can be
+        # auto-disambiguated in deduplicate_foods().
+        stem = os.path.splitext(os.path.basename(path))[0]
+        for entry in (*mod_ingredients, *mod_recipes):
+            if isinstance(entry, dict):
+                entry.setdefault("_source", stem)
+        ingredients += mod_ingredients
+        recipes     += mod_recipes
     return ingredients, recipes
 
 
@@ -47,9 +58,6 @@ def _equiv_key(food):
         _norm_nutrients(food.get("nutrients", {})),
     )
 
-def _foods_are_equivalent(a, b):
-    return _equiv_key(a) == _equiv_key(b)
-
 def _merge_names(names):
     if len(names) == 1:
         return names[0]
@@ -60,30 +68,49 @@ def _merge_names(names):
 
 def deduplicate_foods(foods):
     """
-    Returns (deduped_foods, errors).
+    Returns (deduped_foods, warnings).
 
     Rules:
       - Same name, same solver data   → keep one silently (multi-source files)
-      - Same name, different data     → error (genuine conflict)
+      - Same name, different data     → keep all variants, auto-disambiguated
+                                        by source file, e.g. "Coffee, brewed
+                                        [local_travel]", and warn
       - Different name, same data     → merge into one entry with concatenated
                                         name, e.g. "Bluefruit / Redfruit"
     """
-    errors = []
+    warnings = []
 
-    # Check for same-name, different-data conflicts.
-    by_name = {}
+    # Find names that appear with more than one distinct set of solver data.
+    keys_by_name = {}
     for food in foods:
-        name = food.get("name")
-        if name in by_name:
-            if not _foods_are_equivalent(by_name[name], food):
-                errors.append(
-                    f"Name conflict: {name!r} appears with different nutrient data"
-                )
-        else:
-            by_name[name] = food
+        keys_by_name.setdefault(food.get("name"), set()).add(_equiv_key(food))
+    conflicted = {name for name, keys in keys_by_name.items() if len(keys) > 1}
 
-    if errors:
-        return foods, errors
+    # Rename conflicting entries after their source file; conflicting variants
+    # within the same file get a counter suffix.
+    if conflicted:
+        foods = [dict(food) for food in foods]
+        assigned = {}  # original name → {new name: equiv_key}
+        for food in foods:
+            name = food.get("name")
+            if name not in conflicted:
+                continue
+            key = _equiv_key(food)
+            slot = assigned.setdefault(name, {})
+            src = food.get("_source", "unknown")
+            new_name = f"{name} [{src}]"
+            n = 2
+            while new_name in slot and slot[new_name] != key:
+                new_name = f"{name} [{src} #{n}]"
+                n += 1
+            slot[new_name] = key
+            food["name"] = new_name
+        for name in sorted(conflicted):
+            variants = ", ".join(repr(v) for v in sorted(assigned[name]))
+            warnings.append(
+                f"Name conflict: {name!r} appears with different nutrient data; "
+                f"kept as {variants}"
+            )
 
     # Merge solver-equivalent entries, concatenating distinct names.
     groups = {}  # equiv_key → list of distinct names
@@ -100,4 +127,4 @@ def deduplicate_foods(foods):
         elif name not in groups[key]:
             groups[key].append(name)
 
-    return [dict(first[k], name=_merge_names(groups[k])) for k in order], []
+    return [dict(first[k], name=_merge_names(groups[k])) for k in order], warnings

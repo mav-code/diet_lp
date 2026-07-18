@@ -149,7 +149,7 @@ You can specify minima and maxima for the solver to abide by:
 
 #### Validation and deduplication
 
-On load, all entries are validated (malformed entries abort the run with a clear error message). Entries that are nutritionally identical but differently named are merged into a single solver variable with a combined name (e.g. `"Bluefruit / Redfruit"`), reflecting that either option satisfies the solution. Same-name entries with conflicting nutrient data are an error.
+On load, all entries are validated (malformed entries abort the run with a clear error message). Entries that are nutritionally identical but differently named are merged into a single solver variable with a combined name (e.g. `"Bluefruit / Redfruit"`), reflecting that either option satisfies the solution. Same-name entries with conflicting nutrient data are kept as separate foods, auto-disambiguated by their source file (e.g. `"Coffee, brewed [local_travel]"`), and a warning is printed. Exact same-name, same-data duplicates across files are silently collapsed.
 
 ### USDA importer
 

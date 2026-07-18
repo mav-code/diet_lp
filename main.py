@@ -270,12 +270,12 @@ if __name__ == "__main__":
         print("No foods loaded. Check the foods/ directory.")
         exit(1)
 
-    all_foods, errors = deduplicate_foods(all_foods)
-    if errors:
-        print(f"Found {len(errors)} name conflict(s) in food data — aborting:\n")
-        for err in errors:
-            print(f"  {err}")
-        exit(1)
+    all_foods, warnings = deduplicate_foods(all_foods)
+    if warnings:
+        print(f"Found {len(warnings)} name conflict(s) in food data — auto-disambiguated:\n")
+        for warning in warnings:
+            print(f"  {warning}")
+        print()
 
     errors = validate_foods(all_foods)
     if errors:
