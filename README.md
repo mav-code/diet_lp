@@ -19,7 +19,8 @@ pip install -r requirements.txt
 ## Usage
 
 ```bash
-python3 main.py
+python3 main.py                      # solve over all food files
+python3 main.py --only local_travel  # ...or a chosen subset of foods/
 ```
 
 <details>
@@ -101,7 +102,7 @@ diet-lp/
 
 </details>
 <br>
-Every `.py` file in `foods/` is loaded automatically. Drop any file defining `INGREDIENTS` and/or `RECIPES` lists there and it will be picked up on the next run — no changes to any other file needed. For instance, you can put more foods in `local_example.py`, or a renamed copy of it. Conversely, to exclude foods you could delete them or comment them out of these files.
+Every `.py` file in `foods/` is loaded automatically. Drop any file defining `INGREDIENTS` and/or `RECIPES` lists there and it will be picked up on the next run — no changes to any other file needed. For instance, you can put more foods in `local_example.py`, or a renamed copy of it. Conversely, to exclude foods you could delete them or comment them out of these files — or restrict a single run to specific files with `--only`.
 
 ### Settings
 

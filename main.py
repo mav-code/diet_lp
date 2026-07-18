@@ -263,7 +263,19 @@ def print_results(solver, status, food_vars, foods, over_vars, under_vars):
 # ------------------------------------------------------------------------------
 
 if __name__ == "__main__":
-    INGREDIENTS, RECIPES = load_foods_dir()
+    import argparse
+    parser = argparse.ArgumentParser(description="Diet LP solver.")
+    parser.add_argument(
+        "--only", nargs="+", metavar="FILE",
+        help="load only these foods/ files, by name (e.g. --only local_travel usda)",
+    )
+    args = parser.parse_args()
+
+    try:
+        INGREDIENTS, RECIPES = load_foods_dir(only=args.only)
+    except ValueError as e:
+        print(e)
+        exit(1)
     all_foods = INGREDIENTS + RECIPES
 
     if not all_foods:

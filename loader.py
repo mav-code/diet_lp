@@ -13,10 +13,29 @@ import glob
 import os
 
 
-def load_foods_dir():
+def load_foods_dir(only=None):
+    """
+    Load INGREDIENTS/RECIPES from .py files in foods/.
+
+    only: optional list of file names (with or without .py) restricting which
+    files are loaded. Unknown names raise ValueError listing what's available.
+    """
     ingredients, recipes = [], []
     foods_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "foods")
-    for path in sorted(glob.glob(os.path.join(foods_dir, "*.py"))):
+    paths = sorted(glob.glob(os.path.join(foods_dir, "*.py")))
+
+    if only:
+        by_stem = {os.path.splitext(os.path.basename(p))[0]: p for p in paths}
+        wanted = {name[:-3] if name.endswith(".py") else name for name in only}
+        unknown = sorted(wanted - set(by_stem))
+        if unknown:
+            raise ValueError(
+                f"Unknown food file(s): {', '.join(unknown)}. "
+                f"Available: {', '.join(sorted(by_stem))}"
+            )
+        paths = [p for p in paths if os.path.splitext(os.path.basename(p))[0] in wanted]
+
+    for path in paths:
         # Compile fresh instead of importing: importlib can serve stale
         # __pycache__ bytecode when a source edit lands within the same
         # mtime second, silently ignoring the edit.
