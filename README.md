@@ -20,7 +20,7 @@ pip install -r requirements.txt
 
 ```bash
 python3 main.py                      # solve over all food files
-python3 main.py --only local_travel  # ...or a chosen subset of foods/
+python3 main.py --only stigler  # ...or a chosen subset of foods/
 ```
 
 <details>
