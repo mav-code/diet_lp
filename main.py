@@ -141,22 +141,30 @@ def print_results(solver, status, food_vars, foods, over_vars, under_vars):
         "zinc", "b12", "folate", "thiamine", "riboflavin", "niacin",
     ]
 
-    # --- Collect active foods, compute gram weight, sort descending ---
-    active = []
+    # --- Collect foods in the solution, compute gram weight, sort descending ---
+    # Amounts below DISPLAY_MIN (0.01 g or servings) get no row of their own, but
+    # they still count toward TOTAL: 0.009 of a whole-batch recipe can be ~50 kcal.
+    DISPLAY_MIN = 0.01
+    active, hidden = [], []
     for var, food in zip(food_vars, foods):
         amt = var.solution_value()
-        if amt < 0.01:
+        if amt <= 0:
             continue
         is_recipe = food.get("unit") == "1 serving"
         scale = 1.0 if is_recipe else 1.0 / 100.0
         weight_g = amt * food.get("grams", 100) if is_recipe else amt
         nutrients = {k: (food["nutrients"].get(k) or 0.0) * amt * scale
                      for k in nutrient_keys}
-        active.append(dict(name=food["name"], amt=amt, is_recipe=is_recipe,
-                           weight_g=weight_g, nutrients=nutrients))
+        row = dict(name=food["name"], amt=amt, is_recipe=is_recipe,
+                   weight_g=weight_g, nutrients=nutrients)
+        (active if amt >= DISPLAY_MIN else hidden).append(row)
     active.sort(key=lambda x: x["weight_g"], reverse=True)
 
-    totals = {k: sum(a["nutrients"][k] for a in active) for k in nutrient_keys}
+    totals = {k: sum(a["nutrients"][k] for a in active + hidden) for k in nutrient_keys}
+    # Combined contribution of the hidden foods, shown as one row so the visible
+    # rows still add up to TOTAL. Skipped when it's only solver float noise.
+    hidden_sum = {k: sum(h["nutrients"][k] for h in hidden) for k in nutrient_keys}
+    show_hidden = any(abs(v) >= 0.05 for v in hidden_sum.values())
 
     # --- Table helpers ---
     # Foods are rows; nutrients are columns.
@@ -194,6 +202,12 @@ def print_results(solver, status, food_vars, foods, over_vars, under_vars):
             line = f"{a['name'][:NAME_W]:<{NAME_W}} {amt_str:>{AMT_W}}"
             for c in cols:
                 line += " |" if c is None else f" {a['nutrients'][c[0]]:{col_w}.1f}"
+            print(line)
+
+        if show_hidden:
+            line = f"{f'(other, <{DISPLAY_MIN})':<{NAME_W}} {'':>{AMT_W}}"
+            for c in cols:
+                line += " |" if c is None else f" {hidden_sum[c[0]]:{col_w}.1f}"
             print(line)
 
         print(sep)
