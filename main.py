@@ -188,7 +188,9 @@ def print_results(solver, status, food_vars, foods, over_vars, under_vars):
         print(sep)
 
         for a in active:
-            amt_str = f"{a['amt']:.1f}srv" if a["is_recipe"] else f"{a['amt']:.0f}g"
+            # Two decimals for servings: whole-batch recipes are often picked in
+            # small fractions (0.04 of a 6000 kcal pot is 240 kcal).
+            amt_str = f"{a['amt']:.2f}srv" if a["is_recipe"] else f"{a['amt']:.0f}g"
             line = f"{a['name'][:NAME_W]:<{NAME_W}} {amt_str:>{AMT_W}}"
             for c in cols:
                 line += " |" if c is None else f" {a['nutrients'][c[0]]:{col_w}.1f}"
