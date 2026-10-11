@@ -34,7 +34,9 @@ from usda_fdc.exceptions import FdcApiError
 load_dotenv()
 
 # ---------------------------------------------------------------------------
-# Nutrient mapping: USDA nutrient_nbr → our key
+# Nutrient mapping: USDA nutrient ID → our key
+# Keys are FDC nutrient IDs (nutrient.id, e.g. 1008 = Energy), not the legacy
+# SR codes in nutrient.number (e.g. 208 = Energy).
 # ---------------------------------------------------------------------------
 
 NUTRIENT_MAP = {
@@ -97,10 +99,11 @@ def extract_nutrients(food):
     """Return dict of our nutrient keys from a fully-fetched Food object."""
     result = {}
     for n in food.nutrients:
-        nbr = n.nutrient_nbr
-        if nbr is None:
+        # Match on the FDC nutrient ID. usda_fdc's nutrient_nbr holds the legacy
+        # SR code (208 for Energy), which never matches NUTRIENT_MAP's keys.
+        if n.id is None:
             continue
-        key = NUTRIENT_MAP.get(int(nbr))
+        key = NUTRIENT_MAP.get(int(n.id))
         if key:
             result[key] = round(n.amount, 3) if n.amount is not None else None
     return result
