@@ -621,11 +621,12 @@ INGREDIENTS = [
         "name": "Lemons",
         "unit": "100g",
         "grams": 100,
-        "link": "https://fdc.nal.usda.gov/food-details/167746/nutrients",
-        "nutrients": {
-            "calories": 29, "carbs": 9.32, "fat": 0.3, "protein": 1.1,
-            "sodium": 2.0, "cholesterol": 0.0, "fiber": 2.8,
-            "vitamin_c": 53, "calcium": 26, "iron": 0.6, "potassium": 138,
+        "max_amount": 92, # too much is bad for teeth. max_amount crudely copied from lemon juice max_amount, 
+        "link": "https://fdc.nal.usda.gov/food-details/167746/nutrients", # although strictly they shouldn't
+        "nutrients": {                                                    # be the same. Also, their max should
+            "calories": 29, "carbs": 9.32, "fat": 0.3, "protein": 1.1,    # be treated as combined; the max of
+            "sodium": 2.0, "cholesterol": 0.0, "fiber": 2.8,              # both would be twice as much as you
+            "vitamin_c": 53, "calcium": 26, "iron": 0.6, "potassium": 138, # should have.
             "magnesium": 8.0, "zinc": 0.06, "b12": 0.0, "folate": 11,
             "thiamine": 0.04, "riboflavin": 0.02, "niacin": 0.1,
         },
