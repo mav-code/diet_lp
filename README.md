@@ -4,7 +4,7 @@ Given a set of foods and nutritional targets, the solver finds the quantities of
 
 This is a toy for exploring Google's Linear Programming solver [OR-Tools](https://developers.google.com/optimization) (GLOP solver) by expanding on their implementation of the [Stigler diet problem](https://developers.google.com/optimization/lp/stigler_diet), towards a functionality resembling that of [Eat This Much](https://www.eatthismuch.com/).
 
-The example database contains all the foods in the Stigler problem, plus many more, and is set up to allow you to enter more foods manually or even [fetch them](#usda-importer). The tool's results are not serious (let alone optimal) nutritional advice, just as the original Stigler problem wasn't; but it moves in that direction. Neither Claude Code nor myself are trustworthy nutrition experts, and I don't know which of us is worse.
+The example database contains all 77 foods in the Stigler problem (with his 1939 nutrient numbers swapped out for modern USDA values, since the old ones didn't hold up; details in `foods/stigler.py`), plus many more, and is set up to allow you to enter more foods manually or even [fetch them](#usda-importer). The tool's results are not serious (let alone optimal) nutritional advice, just as the original Stigler problem wasn't; but it moves in that direction. Neither Claude Code nor myself are trustworthy nutrition experts, and I don't know which of us is worse.
 
 The specific number targets in here are just whatever I happen to have been playing around with. Customize them for your own needs in `settings.py`.
 
@@ -92,7 +92,7 @@ diet-lp/
 ├── validate.py      # input validation
 ├── requirements.txt
 ├── foods/
-│   ├── stigler.py         # Stigler (1945) commodity set
+│   ├── stigler.py         # Stigler's 77 commodities, with USDA SR Legacy values
 │   ├── usda.py            # additional USDA SR Legacy ingredients
 │   ├── recipes.py         # example recipes
 │   └── local_example.py   # template for a personal food file (optional)
@@ -156,7 +156,7 @@ On load, all entries are validated (malformed entries abort the run with a clear
 
 This repo includes a helper tool, `tools/usda_fetch.py`, which looks up foods in [USDA FoodData Central](https://fdc.nal.usda.gov/) by name and generates ready-to-use INGREDIENTS entries. It always outputs per-100g entries.
 
-> **Heads up:** the USDA API has been flaky (as of Oct 2026): `api.nal.usda.gov` intermittently fails DNS lookups, and requests sometimes bounce with a random `400 Bad Request`. Neither is your key or your network. If a lookup fails, wait a bit and try again.
+> **Heads up:** the USDA API has been flaky (as of Oct 2026): `api.nal.usda.gov` intermittently fails DNS lookups, and requests sometimes bounce with a random `400 Bad Request`. You can wait and try again, but it fails most of the time.
 
 <details>
 <summary>Importer Setup and Use </summary>
