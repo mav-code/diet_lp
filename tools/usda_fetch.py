@@ -106,6 +106,17 @@ def extract_nutrients(food):
         key = NUTRIENT_MAP.get(int(n.id))
         if key:
             result[key] = round(n.amount, 3) if n.amount is not None else None
+
+    # Foundation foods often omit Energy (1008) and report kcal only under the
+    # Atwater IDs. Prefer specific factors (2048), the method SR Legacy uses,
+    # then general factors (2047).
+    if result.get("calories") is None:
+        atwater = {int(n.id): n.amount for n in food.nutrients
+                   if n.id is not None and n.amount is not None}
+        for fallback_id in (2048, 2047):
+            if fallback_id in atwater:
+                result["calories"] = round(atwater[fallback_id], 3)
+                break
     return result
 
 
