@@ -9,40 +9,46 @@ INGREDIENTS = [
 
     # --- Proteins ---
     {
-        "name": "Chicken breast, raw",
+        "name": "Chicken breast, skinless, boneless, raw",
+        # USDA: Chicken, broiler or fryers, breast, skinless, boneless, meat only, raw (FDC 171077)
+        "link": "https://fdc.nal.usda.gov/food-details/171077/nutrients",
         "unit": "100g",
         "grams": 100,
         "nutrients": {
-            "calories": 120, "carbs": 0, "fat": 2.6, "protein": 22.5,
-            "sodium": 74, "cholesterol": 73, "fiber": 0,
-            "vitamin_c": 0, "calcium": 11, "iron": 0.7, "potassium": 356,
-            "magnesium": 29, "zinc": 0.9, "b12": 0.3, "folate": 4,
-            "thiamine": 0.07, "riboflavin": 0.11, "niacin": 13.7,
+            "calories": 120.0, "carbs": 0.0, "fat": 2.62, "protein": 22.5,
+            "sodium": 45.0, "cholesterol": 73.0, "fiber": 0.0,
+            "vitamin_c": 0.0, "calcium": 5.0, "iron": 0.37, "potassium": 334.0,
+            "magnesium": 28.0, "zinc": 0.68, "b12": 0.21, "folate": 9.0,
+            "thiamine": 0.094, "riboflavin": 0.177, "niacin": 9.6,
         },
     },
     {
-        "name": "Salmon, Atlantic, raw",
+        "name": "Salmon, Atlantic, farmed, raw",
+        # USDA: Fish, salmon, Atlantic, farmed, raw (FDC 175167)
+        "link": "https://fdc.nal.usda.gov/food-details/175167/nutrients",
         "unit": "100g",
         "grams": 100,
         "nutrients": {
-            "calories": 208, "carbs": 0, "fat": 13.4, "protein": 20.4,
-            "sodium": 59, "cholesterol": 63, "fiber": 0,
-            "vitamin_c": 0, "calcium": 12, "iron": 0.8, "potassium": 363,
-            "magnesium": 29, "zinc": 0.6, "b12": 3.2, "folate": 25,
-            "thiamine": 0.23, "riboflavin": 0.38, "niacin": 7.9,
+            "calories": 208.0, "carbs": 0.0, "fat": 13.42, "protein": 20.42,
+            "sodium": 59.0, "cholesterol": 55.0, "fiber": 0.0,
+            "vitamin_c": 3.9, "calcium": 9.0, "iron": 0.34, "potassium": 363.0,
+            "magnesium": 27.0, "zinc": 0.36, "b12": 3.23, "folate": 26.0,
+            "thiamine": 0.207, "riboflavin": 0.155, "niacin": 8.672,
         },
     },
     {
-        "name": "Tuna, canned in water",
+        "name": "Tuna, light, canned in water, drained",
+        # USDA: Fish, tuna, light, canned in water, drained solids (Includes foods for USDA's Food Distribution Program) (FDC 173709)
+        "link": "https://fdc.nal.usda.gov/food-details/173709/nutrients",
         "unit": "100g",
         "grams": 100,
         "max_amount": 85,  # ~1 can, 3x/week mercury limit
         "nutrients": {
-            "calories": 116, "carbs": 0, "fat": 2.6, "protein": 25.5,
-            "sodium": 396, "cholesterol": 46, "fiber": 0,
-            "vitamin_c": 0, "calcium": 11, "iron": 1.3, "potassium": 237,
-            "magnesium": 35, "zinc": 0.9, "b12": 2.5, "folate": 4,
-            "thiamine": 0.03, "riboflavin": 0.1, "niacin": 13.3,
+            "calories": 86.0, "carbs": 0.0, "fat": 0.96, "protein": 19.44,
+            "sodium": 247.0, "cholesterol": 36.0, "fiber": 0.0,
+            "vitamin_c": 0.0, "calcium": 17.0, "iron": 1.63, "potassium": 179.0,
+            "magnesium": 23.0, "zinc": 0.69, "b12": 2.55, "folate": 4.0,
+            "thiamine": 0.03, "riboflavin": 0.084, "niacin": 10.136,
         },
     },
     {
@@ -58,15 +64,17 @@ INGREDIENTS = [
         },
     },
     {
-        "name": "Tofu, firm, raw",
+        "name": "Tofu, regular, raw",
+        # USDA: Tofu, raw, regular, prepared with calcium sulfate (FDC 172476)
+        "link": "https://fdc.nal.usda.gov/food-details/172476/nutrients",
         "unit": "100g",
         "grams": 100,
         "nutrients": {
-            "calories": 76, "carbs": 1.9, "fat": 4.3, "protein": 8.1,
-            "sodium": 7, "cholesterol": 0, "fiber": 0.3,
-            "vitamin_c": 0.1, "calcium": 350, "iron": 1.6, "potassium": 121,
-            "magnesium": 30, "zinc": 0.8, "b12": 0, "folate": 15,
-            "thiamine": 0.08, "riboflavin": 0.05, "niacin": 0.2,
+            "calories": 76.0, "carbs": 1.87, "fat": 4.78, "protein": 8.08,
+            "sodium": 7.0, "cholesterol": 0.0, "fiber": 0.3,
+            "vitamin_c": 0.1, "calcium": 350.0, "iron": 5.36, "potassium": 121.0,
+            "magnesium": 30.0, "zinc": 0.8, "b12": 0.0, "folate": 15.0,
+            "thiamine": 0.081, "riboflavin": 0.052, "niacin": 0.195,
         },
     },
     {
@@ -83,26 +91,30 @@ INGREDIENTS = [
     },
     {
         "name": "Cottage cheese, lowfat 1%",
+        # USDA: Cheese, cottage, lowfat, 1% milkfat (FDC 173417)
+        "link": "https://fdc.nal.usda.gov/food-details/173417/nutrients",
         "unit": "100g",
         "grams": 100,
         "nutrients": {
-            "calories": 72, "carbs": 2.7, "fat": 1.0, "protein": 12.4,
-            "sodium": 372, "cholesterol": 7, "fiber": 0,
-            "vitamin_c": 0, "calcium": 86, "iron": 0.1, "potassium": 84,
-            "magnesium": 11, "zinc": 0.4, "b12": 0.4, "folate": 12,
-            "thiamine": 0.02, "riboflavin": 0.16, "niacin": 0.1,
+            "calories": 72.0, "carbs": 2.72, "fat": 1.02, "protein": 12.39,
+            "sodium": 406.0, "cholesterol": 4.0, "fiber": 0.0,
+            "vitamin_c": 0.0, "calcium": 61.0, "iron": 0.14, "potassium": 86.0,
+            "magnesium": 5.0, "zinc": 0.38, "b12": 0.63, "folate": 12.0,
+            "thiamine": 0.021, "riboflavin": 0.165, "niacin": 0.128,
         },
     },
     {
         "name": "Lentils, raw",
+        # USDA: Lentils, raw (FDC 172420)
+        "link": "https://fdc.nal.usda.gov/food-details/172420/nutrients",
         "unit": "100g",
         "grams": 100,
         "nutrients": {
-            "calories": 352, "carbs": 60.1, "fat": 1.1, "protein": 25.8,
-            "sodium": 6, "cholesterol": 0, "fiber": 10.7,
-            "vitamin_c": 4.4, "calcium": 56, "iron": 7.5, "potassium": 677,
-            "magnesium": 122, "zinc": 3.3, "b12": 0, "folate": 479,
-            "thiamine": 0.87, "riboflavin": 0.21, "niacin": 2.6,
+            "calories": 352.0, "carbs": 63.35, "fat": 1.06, "protein": 24.63,
+            "sodium": 6.0, "cholesterol": 0.0, "fiber": 10.7,
+            "vitamin_c": 4.5, "calcium": 35.0, "iron": 6.51, "potassium": 677.0,
+            "magnesium": 47.0, "zinc": 3.27, "b12": 0.0, "folate": 479.0,
+            "thiamine": 0.873, "riboflavin": 0.211, "niacin": 2.605,
         },
     },
     {
@@ -133,14 +145,16 @@ INGREDIENTS = [
     },
     {
         "name": "Kale, raw",
+        # USDA: Kale, raw (FDC 168421)
+        "link": "https://fdc.nal.usda.gov/food-details/168421/nutrients",
         "unit": "100g",
         "grams": 100,
         "nutrients": {
-            "calories": 49, "carbs": 8.8, "fat": 0.9, "protein": 4.3,
-            "sodium": 38, "cholesterol": 0, "fiber": 3.6,
-            "vitamin_c": 120, "calcium": 150, "iron": 1.5, "potassium": 491,
-            "magnesium": 47, "zinc": 0.6, "b12": 0, "folate": 141,
-            "thiamine": 0.11, "riboflavin": 0.13, "niacin": 1.0,
+            "calories": 35.0, "carbs": 4.42, "fat": 1.49, "protein": 2.92,
+            "sodium": 53.0, "cholesterol": 0.0, "fiber": 4.1,
+            "vitamin_c": 93.4, "calcium": 254.0, "iron": 1.6, "potassium": 348.0,
+            "magnesium": 33.0, "zinc": 0.39, "b12": 0.0, "folate": 62.0,
+            "thiamine": 0.113, "riboflavin": 0.347, "niacin": 1.18,
         },
     },
     {
@@ -208,15 +222,17 @@ INGREDIENTS = [
 
     # --- Grains ---
     {
-        "name": "Brown rice, raw",
+        "name": "Brown rice, medium-grain, raw",
+        # USDA: Rice, brown, medium-grain, raw (Includes foods for USDA's Food Distribution Program) (FDC 169706)
+        "link": "https://fdc.nal.usda.gov/food-details/169706/nutrients",
         "unit": "100g",
         "grams": 100,
         "nutrients": {
-            "calories": 370, "carbs": 77.2, "fat": 2.7, "protein": 7.9,
-            "sodium": 7, "cholesterol": 0, "fiber": 3.5,
-            "vitamin_c": 0, "calcium": 33, "iron": 1.8, "potassium": 268,
-            "magnesium": 143, "zinc": 2.0, "b12": 0, "folate": 20,
-            "thiamine": 0.4, "riboflavin": 0.09, "niacin": 5.1,
+            "calories": 362.0, "carbs": 76.17, "fat": 2.68, "protein": 7.5,
+            "sodium": 4.0, "cholesterol": 0.0, "fiber": 3.4,
+            "vitamin_c": 0.0, "calcium": 33.0, "iron": 1.8, "potassium": 268.0,
+            "magnesium": 143.0, "zinc": 2.02, "b12": 0.0, "folate": 20.0,
+            "thiamine": 0.413, "riboflavin": 0.043, "niacin": 4.308,
         },
     },
     {
