@@ -24,6 +24,7 @@ See README for how to get a free API key.
 
 import argparse
 import os
+import re
 import sys
 
 from dotenv import load_dotenv
@@ -82,6 +83,16 @@ SEARCH_DATA_TYPES = ["Foundation", "SR Legacy", "Survey (FNDDS)"]
 # Core helpers
 # ---------------------------------------------------------------------------
 
+def redact(err):
+    """
+    Return str(err) with the API key masked. usda_fdc embeds the full request
+    URL (including ?api_key=...) in its error messages, which would otherwise
+    print the key to the terminal.
+    """
+    msg = re.sub(r"api_key=[^&\s'\")]+", "api_key=***", str(err))
+    key = os.environ.get("FDC_API_KEY")
+    return msg.replace(key, "***") if key else msg
+
 def extract_nutrients(food):
     """Return dict of our nutrient keys from a fully-fetched Food object."""
     result = {}
@@ -127,7 +138,7 @@ def search_and_pick(client, query, page_size=10):
     try:
         results = client.search(query, data_type=SEARCH_DATA_TYPES, page_size=page_size)
     except FdcApiError as e:
-        print(f"  API error: {e}")
+        print(f"  API error: {redact(e)}")
         return None
 
     foods = results.foods
@@ -154,7 +165,7 @@ def search_and_pick(client, query, page_size=10):
     try:
         food = client.get_food(chosen.fdc_id)
     except FdcApiError as e:
-        print(f"  API error: {e}")
+        print(f"  API error: {redact(e)}")
         return None
 
     return food, extract_nutrients(food)
