@@ -26,7 +26,7 @@ from validate import validate_foods
 from settings import (
     CALORIE_MIN, CALORIE_MAX,
     MACRO_TARGETS, MACRO_BOUNDS, MACRO_WEIGHTS,
-    SODIUM_MAX, CHOLESTEROL_MAX,
+    SODIUM_MIN, SODIUM_MAX, CHOLESTEROL_MAX,
     FIBER_MIN,
     MICRONUTRIENT_MINS,
 )
@@ -80,7 +80,7 @@ def solve(foods):
         add_linear_constraint(nutrient_total(macro), lo, hi, f"{macro}_bounds")
 
     # --- Harmful nutrient ceilings (hard) ---
-    add_linear_constraint(nutrient_total("sodium"),      0, SODIUM_MAX,      "sodium")
+    add_linear_constraint(nutrient_total("sodium"),      SODIUM_MIN, SODIUM_MAX, "sodium")
     add_linear_constraint(nutrient_total("cholesterol"), 0, CHOLESTEROL_MAX, "cholesterol")
 
     # --- Fiber floor (hard) ---
@@ -235,7 +235,7 @@ def print_results(solver, status, food_vars, foods, over_vars, under_vars):
         ("fat",         "Fat",     "g",    f"{lo_f}-{hi_f}"),
         ("protein",     "Protein", "g",    f"{lo_p}-{hi_p}"),
         None,
-        ("sodium",      "Sodium",  "mg",   f"max {SODIUM_MAX}"),
+        ("sodium",      "Sodium",  "mg",   f"{SODIUM_MIN}-{SODIUM_MAX}"),
         ("cholesterol", "Cholest", "mg",   f"max {CHOLESTEROL_MAX}"),
         ("fiber",       "Fiber",   "g",    f"min {FIBER_MIN}"),
     ]

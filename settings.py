@@ -38,6 +38,9 @@ MACRO_WEIGHTS = {
 
 # Hard upper bounds on harmful nutrients
 SODIUM_MAX      = 1500  # mg
+# Sodium is also essential: without a floor, low-salt food sets can drive it
+# near zero. ~500mg/day is the commonly cited physiological minimum.
+SODIUM_MIN      = 500   # mg
 CHOLESTEROL_MAX = 200   # mg
 
 # Hard lower bound on fiber

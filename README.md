@@ -112,7 +112,8 @@ All nutritional targets and bounds live in `settings.py`:
 - **Macro targets** — the solver minimizes weighted deviation from these
 - **Macro bounds** — hard min/max per macro regardless of target
 - **Macro weights** — tune over/undershoot penalties per macro; asymmetric weights are supported
-- **Sodium, cholesterol** — hard upper bounds
+- **Sodium** — hard lower and upper bounds (it's essential, just not in bulk)
+- **Cholesterol** — hard upper bound
 - **Fiber** — hard lower bound
 - **Micronutrient minimums** — hard lower bounds for Vitamin C, Calcium, Iron, Potassium, Magnesium, Zinc, B12, Folate, Thiamine, Riboflavin, and Niacin
 
