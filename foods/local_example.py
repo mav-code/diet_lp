@@ -34,10 +34,7 @@ INGREDIENTS = [
 
     # Worked example: a nutrition label converted to per-100g.
     # Label serving is 1/4 cup drained (30g), so every value is x 100/30.
-    # Nutrients the label doesn't list are None (the solver treats None as 0,
-    # so these are undercounted; USDA's boiled lupins, FDC 172424 in usda.py,
-    # are a reasonable proxy if you need them). Iron "0mg" on a label means
-    # <0.5mg per serving, so it's undercounted too.
+    # Nutrients the label doesn't list are None.
     {
         "name": "Lupini beans, brined, drained (Cento)",
         "unit": "100g",

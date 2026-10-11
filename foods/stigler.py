@@ -8,12 +8,6 @@ https://developers.google.com/optimization/lp/stigler_diet). The nutrient
 values are not Stigler's: every value comes from USDA FoodData Central
 SR Legacy, per 100g, and each entry links to its FDC record.
 
-Why: an earlier version of this file converted Stigler's 1939 per-dollar
-nutrient data to per-100g and mixed it with USDA macros. The two sources
-disagreed badly for many foods (e.g. lemons had 20.6mg vitamin C vs USDA's
-53mg, and stated calories didn't match the macros for 16 of 65 foods), so
-the 1939 numbers were replaced wholesale (Oct 2026).
-
 Foods are matched in their as-purchased form, like Stigler's commodities:
 raw meat and produce, dry grains and legumes, canned goods as packed
 (solids and liquids unless noted). Judgment calls on ambiguous 1939 items:
@@ -437,20 +431,21 @@ INGREDIENTS = [
             "thiamine": 0.071, "riboflavin": 0.118, "niacin": 2.556,
         },
     },
-    {
-        # USDA: Beef, variety meats and by-products, liver, raw
-        "name": "Liver (Beef)",
-        "unit": "100g",
-        "grams": 100,
-        "link": "https://fdc.nal.usda.gov/food-details/169451/nutrients",
-        "nutrients": {
-            "calories": 135, "carbs": 3.89, "fat": 3.63, "protein": 20.36,
-            "sodium": 69, "cholesterol": 275, "fiber": 0.0,
-            "vitamin_c": 1.3, "calcium": 5.0, "iron": 4.9, "potassium": 313,
-            "magnesium": 18, "zinc": 4.0, "b12": 59.3, "folate": 290,
-            "thiamine": 0.189, "riboflavin": 2.755, "niacin": 13.175,
-        },
-    },
+    # Commenting out at my doctor's suggestion
+    # {
+    #     # USDA: Beef, variety meats and by-products, liver, raw
+    #     "name": "Liver (Beef)",
+    #     "unit": "100g",
+    #     "grams": 100,
+    #     "link": "https://fdc.nal.usda.gov/food-details/169451/nutrients",
+    #     "nutrients": {
+    #         "calories": 135, "carbs": 3.89, "fat": 3.63, "protein": 20.36,
+    #         "sodium": 69, "cholesterol": 275, "fiber": 0.0,
+    #         "vitamin_c": 1.3, "calcium": 5.0, "iron": 4.9, "potassium": 313,
+    #         "magnesium": 18, "zinc": 4.0, "b12": 59.3, "folate": 290,
+    #         "thiamine": 0.189, "riboflavin": 2.755, "niacin": 13.175,
+    #     },
+    # },
     {
         # USDA: Lamb, leg, whole (shank and sirloin), separable lean and fat, trimmed to 1/8" fat, choice, raw
         "name": "Leg of Lamb",
