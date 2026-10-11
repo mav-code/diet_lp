@@ -31,6 +31,26 @@ INGREDIENTS = [
     #         "thiamine": 0, "riboflavin": 0, "niacin": 0,
     #     },
     # },
+
+    # Worked example: a nutrition label converted to per-100g.
+    # Label serving is 1/4 cup drained (30g), so every value is x 100/30.
+    # Nutrients the label doesn't list are None (the solver treats None as 0,
+    # so these are undercounted; USDA's boiled lupins, FDC 172424 in usda.py,
+    # are a reasonable proxy if you need them). Iron "0mg" on a label means
+    # <0.5mg per serving, so it's undercounted too.
+    {
+        "name": "Lupini beans, brined, drained (Cento)",
+        "unit": "100g",
+        "grams": 100,
+        "link": "https://www.cento.com/corp/specs/7079680005.pdf",
+        "nutrients": {
+            "calories": 133, "carbs": 10.0, "fat": 0.0, "protein": 16.7,
+            "sodium": 633, "cholesterol": 0, "fiber": 3.3,
+            "vitamin_c": None, "calcium": 50, "iron": 0.0, "potassium": 233,
+            "magnesium": None, "zinc": None, "b12": None, "folate": None,
+            "thiamine": None, "riboflavin": None, "niacin": None,
+        },
+    },
 ]
 
 RECIPES = [
