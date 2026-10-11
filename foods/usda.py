@@ -46,18 +46,6 @@ INGREDIENTS = [
         },
     },
     {
-        "name": "Eggs, whole, raw",
-        "unit": "100g",
-        "grams": 100,
-        "nutrients": {
-            "calories": 143, "carbs": 0.7, "fat": 9.5, "protein": 12.6,
-            "sodium": 142, "cholesterol": 372, "fiber": 0,
-            "vitamin_c": 0, "calcium": 56, "iron": 1.8, "potassium": 138,
-            "magnesium": 12, "zinc": 1.3, "b12": 0.9, "folate": 47,
-            "thiamine": 0.04, "riboflavin": 0.46, "niacin": 0.1,
-        },
-    },
-    {
         "name": "Ground beef, 90% lean, raw",
         "unit": "100g",
         "grams": 100,
@@ -132,18 +120,6 @@ INGREDIENTS = [
 
     # --- Vegetables ---
     {
-        "name": "Spinach, raw",
-        "unit": "100g",
-        "grams": 100,
-        "nutrients": {
-            "calories": 23, "carbs": 3.6, "fat": 0.4, "protein": 2.9,
-            "sodium": 79, "cholesterol": 0, "fiber": 2.2,
-            "vitamin_c": 28.1, "calcium": 99, "iron": 2.7, "potassium": 558,
-            "magnesium": 79, "zinc": 0.5, "b12": 0, "folate": 194,
-            "thiamine": 0.08, "riboflavin": 0.19, "niacin": 0.7,
-        },
-    },
-    {
         "name": "Broccoli, raw",
         "unit": "100g",
         "grams": 100,
@@ -168,18 +144,6 @@ INGREDIENTS = [
         },
     },
     {
-        "name": "Sweet potato, raw",
-        "unit": "100g",
-        "grams": 100,
-        "nutrients": {
-            "calories": 86, "carbs": 20.1, "fat": 0.1, "protein": 1.6,
-            "sodium": 55, "cholesterol": 0, "fiber": 3.0,
-            "vitamin_c": 2.4, "calcium": 30, "iron": 0.6, "potassium": 337,
-            "magnesium": 25, "zinc": 0.3, "b12": 0, "folate": 11,
-            "thiamine": 0.08, "riboflavin": 0.06, "niacin": 0.6,
-        },
-    },
-    {
         "name": "Bell pepper, red, raw",
         "unit": "100g",
         "grams": 100,
@@ -189,18 +153,6 @@ INGREDIENTS = [
             "vitamin_c": 127.7, "calcium": 7, "iron": 0.4, "potassium": 211,
             "magnesium": 12, "zinc": 0.3, "b12": 0, "folate": 46,
             "thiamine": 0.05, "riboflavin": 0.09, "niacin": 1.0,
-        },
-    },
-    {
-        "name": "Carrots, raw",
-        "unit": "100g",
-        "grams": 100,
-        "nutrients": {
-            "calories": 41, "carbs": 9.6, "fat": 0.2, "protein": 0.9,
-            "sodium": 69, "cholesterol": 0, "fiber": 2.8,
-            "vitamin_c": 5.9, "calcium": 33, "iron": 0.3, "potassium": 320,
-            "magnesium": 12, "zinc": 0.2, "b12": 0, "folate": 19,
-            "thiamine": 0.07, "riboflavin": 0.06, "niacin": 1.0,
         },
     },
     {
@@ -225,18 +177,6 @@ INGREDIENTS = [
             "vitamin_c": 13.7, "calcium": 10, "iron": 0.3, "potassium": 237,
             "magnesium": 11, "zinc": 0.2, "b12": 0, "folate": 15,
             "thiamine": 0.04, "riboflavin": 0.02, "niacin": 0.6,
-        },
-    },
-    {
-        "name": "Onion, raw",
-        "unit": "100g",
-        "grams": 100,
-        "nutrients": {
-            "calories": 40, "carbs": 9.3, "fat": 0.1, "protein": 1.1,
-            "sodium": 4, "cholesterol": 0, "fiber": 1.7,
-            "vitamin_c": 7.4, "calcium": 23, "iron": 0.2, "potassium": 146,
-            "magnesium": 10, "zinc": 0.2, "b12": 0, "folate": 19,
-            "thiamine": 0.05, "riboflavin": 0.03, "niacin": 0.1,
         },
     },
     {
@@ -265,56 +205,8 @@ INGREDIENTS = [
             "thiamine": 0.04, "riboflavin": 0.04, "niacin": 0.4,
         },
     },
-    {
-        "name": "Banana, raw",
-        "unit": "100g",
-        "grams": 100,
-        "nutrients": {
-            "calories": 89, "carbs": 22.8, "fat": 0.3, "protein": 1.1,
-            "sodium": 1, "cholesterol": 0, "fiber": 2.6,
-            "vitamin_c": 8.7, "calcium": 5, "iron": 0.3, "potassium": 358,
-            "magnesium": 27, "zinc": 0.2, "b12": 0, "folate": 20,
-            "thiamine": 0.03, "riboflavin": 0.07, "niacin": 0.7,
-        },
-    },
-    {
-        "name": "Apple, raw",
-        "unit": "100g",
-        "grams": 100,
-        "nutrients": {
-            "calories": 52, "carbs": 13.8, "fat": 0.2, "protein": 0.3,
-            "sodium": 1, "cholesterol": 0, "fiber": 2.4,
-            "vitamin_c": 4.6, "calcium": 6, "iron": 0.1, "potassium": 107,
-            "magnesium": 5, "zinc": 0.0, "b12": 0, "folate": 3,
-            "thiamine": 0.02, "riboflavin": 0.03, "niacin": 0.1,
-        },
-    },
-    {
-        "name": "Orange, raw",
-        "unit": "100g",
-        "grams": 100,
-        "nutrients": {
-            "calories": 47, "carbs": 11.8, "fat": 0.1, "protein": 0.9,
-            "sodium": 0, "cholesterol": 0, "fiber": 2.4,
-            "vitamin_c": 53.2, "calcium": 40, "iron": 0.1, "potassium": 181,
-            "magnesium": 10, "zinc": 0.1, "b12": 0, "folate": 30,
-            "thiamine": 0.09, "riboflavin": 0.04, "niacin": 0.3,
-        },
-    },
 
     # --- Grains ---
-    {
-        "name": "Oats, rolled, dry",
-        "unit": "100g",
-        "grams": 100,
-        "nutrients": {
-            "calories": 389, "carbs": 66.3, "fat": 6.9, "protein": 16.9,
-            "sodium": 2, "cholesterol": 0, "fiber": 10.6,
-            "vitamin_c": 0, "calcium": 54, "iron": 4.7, "potassium": 429,
-            "magnesium": 177, "zinc": 4.0, "b12": 0, "folate": 56,
-            "thiamine": 0.76, "riboflavin": 0.14, "niacin": 1.1,
-        },
-    },
     {
         "name": "Brown rice, raw",
         "unit": "100g",
@@ -341,30 +233,6 @@ INGREDIENTS = [
     },
 
     # --- Dairy & Fats ---
-    {
-        "name": "Milk, whole",
-        "unit": "100g",
-        "grams": 100,
-        "nutrients": {
-            "calories": 61, "carbs": 4.8, "fat": 3.3, "protein": 3.2,
-            "sodium": 43, "cholesterol": 10, "fiber": 0,
-            "vitamin_c": 0, "calcium": 113, "iron": 0.0, "potassium": 132,
-            "magnesium": 10, "zinc": 0.4, "b12": 0.4, "folate": 5,
-            "thiamine": 0.04, "riboflavin": 0.18, "niacin": 0.1,
-        },
-    },
-    {
-        "name": "Cheddar cheese",
-        "unit": "100g",
-        "grams": 100,
-        "nutrients": {
-            "calories": 403, "carbs": 1.3, "fat": 33.1, "protein": 24.9,
-            "sodium": 621, "cholesterol": 105, "fiber": 0,
-            "vitamin_c": 0, "calcium": 721, "iron": 0.7, "potassium": 98,
-            "magnesium": 28, "zinc": 3.1, "b12": 0.8, "folate": 18,
-            "thiamine": 0.03, "riboflavin": 0.43, "niacin": 0.1,
-        },
-    },
     {
         "name": "Olive oil",
         "unit": "100g",
@@ -399,18 +267,6 @@ INGREDIENTS = [
             "vitamin_c": 0, "calcium": 264, "iron": 3.7, "potassium": 733,
             "magnesium": 270, "zinc": 3.1, "b12": 0, "folate": 44,
             "thiamine": 0.21, "riboflavin": 1.14, "niacin": 3.6,
-        },
-    },
-    {
-        "name": "Peanut butter, unsalted",
-        "unit": "100g",
-        "grams": 100,
-        "nutrients": {
-            "calories": 588, "carbs": 20.0, "fat": 50.4, "protein": 25.1,
-            "sodium": 17, "cholesterol": 0, "fiber": 6.0,
-            "vitamin_c": 0, "calcium": 49, "iron": 1.7, "potassium": 558,
-            "magnesium": 154, "zinc": 2.9, "b12": 0, "folate": 87,
-            "thiamine": 0.15, "riboflavin": 0.19, "niacin": 13.7,
         },
     },
     # Disabled: unrealistic ingredient. Home-cooking dry lupins means soaking

@@ -1,7 +1,7 @@
 """
 diet_lp/foods/stigler.py
 
-Stigler (1945) commodity set — 65 ingredients.
+Stigler (1945) commodity set — 77 ingredients.
 
 The food list is the one from George Stigler's 1945 diet problem (as used in
 https://developers.google.com/optimization/lp/stigler_diet). The nutrient
@@ -126,6 +126,20 @@ INGREDIENTS = [
         },
     },
     {
+        # USDA: Cereals, oats, regular and quick, not fortified, dry
+        "name": "Rolled Oats",
+        "unit": "100g",
+        "grams": 100,
+        "link": "https://fdc.nal.usda.gov/food-details/173904/nutrients",
+        "nutrients": {
+            "calories": 379, "carbs": 67.7, "fat": 6.52, "protein": 13.15,
+            "sodium": 6.0, "cholesterol": 0.0, "fiber": 10.1,
+            "vitamin_c": 0.0, "calcium": 52, "iron": 4.25, "potassium": 362,
+            "magnesium": 138, "zinc": 3.64, "b12": 0.0, "folate": 32,
+            "thiamine": 0.46, "riboflavin": 0.155, "niacin": 1.125,
+        },
+    },
+    {
         # USDA: Bread, white, commercially prepared (includes soft bread crumbs)
         "name": "White Bread (Enriched)",
         "unit": "100g",
@@ -198,6 +212,20 @@ INGREDIENTS = [
 
     # --- Dairy & Fats ---
     {
+        # USDA: Milk, whole, 3.25% milkfat, with added vitamin D
+        "name": "Milk",
+        "unit": "100g",
+        "grams": 100,
+        "link": "https://fdc.nal.usda.gov/food-details/171265/nutrients",
+        "nutrients": {
+            "calories": 61, "carbs": 4.8, "fat": 3.25, "protein": 3.15,
+            "sodium": 43, "cholesterol": 10, "fiber": 0.0,
+            "vitamin_c": 0.0, "calcium": 113, "iron": 0.03, "potassium": 132,
+            "magnesium": 10, "zinc": 0.37, "b12": 0.45, "folate": 5.0,
+            "thiamine": 0.046, "riboflavin": 0.169, "niacin": 0.089,
+        },
+    },
+    {
         # USDA: Milk, canned, evaporated, with added vitamin D and without added vitamin A
         "name": "Evaporated Milk (can)",
         "unit": "100g",
@@ -240,6 +268,34 @@ INGREDIENTS = [
         },
     },
     {
+        # USDA: Egg, whole, raw, fresh
+        "name": "Eggs",
+        "unit": "100g",
+        "grams": 100,
+        "link": "https://fdc.nal.usda.gov/food-details/171287/nutrients",
+        "nutrients": {
+            "calories": 143, "carbs": 0.72, "fat": 9.51, "protein": 12.56,
+            "sodium": 142, "cholesterol": 372, "fiber": 0.0,
+            "vitamin_c": 0.0, "calcium": 56, "iron": 1.75, "potassium": 138,
+            "magnesium": 12, "zinc": 1.29, "b12": 0.89, "folate": 47,
+            "thiamine": 0.04, "riboflavin": 0.457, "niacin": 0.075,
+        },
+    },
+    {
+        # USDA: Cheese, cheddar (Includes foods for USDA's Food Distribution Program)
+        "name": "Cheese (Cheddar)",
+        "unit": "100g",
+        "grams": 100,
+        "link": "https://fdc.nal.usda.gov/food-details/173414/nutrients",
+        "nutrients": {
+            "calories": 403, "carbs": 3.37, "fat": 33.31, "protein": 22.87,
+            "sodium": 653, "cholesterol": 99, "fiber": 0.0,
+            "vitamin_c": 0.0, "calcium": 710, "iron": 0.14, "potassium": 76,
+            "magnesium": 27, "zinc": 3.64, "b12": 1.1, "folate": 27,
+            "thiamine": 0.029, "riboflavin": 0.428, "niacin": 0.059,
+        },
+    },
+    {
         # USDA: Cream, fluid, light (coffee cream or table cream)
         "name": "Cream",
         "unit": "100g",
@@ -251,6 +307,20 @@ INGREDIENTS = [
             "vitamin_c": 0.8, "calcium": 91, "iron": 0.05, "potassium": 136,
             "magnesium": 9.0, "zinc": 0.32, "b12": 0.14, "folate": 2.0,
             "thiamine": 0.023, "riboflavin": 0.19, "niacin": 0.09,
+        },
+    },
+    {
+        # USDA: Peanut butter, smooth style, with salt (Includes foods for USDA's Food Distribution Program)
+        "name": "Peanut Butter",
+        "unit": "100g",
+        "grams": 100,
+        "link": "https://fdc.nal.usda.gov/food-details/174266/nutrients",
+        "nutrients": {
+            "calories": 598, "carbs": 22.31, "fat": 51.36, "protein": 22.21,
+            "sodium": 426, "cholesterol": 0.0, "fiber": 5.0,
+            "vitamin_c": 0.0, "calcium": 49, "iron": 1.74, "potassium": 558,
+            "magnesium": 168, "zinc": 2.51, "b12": 0.0, "folate": 87,
+            "thiamine": 0.15, "riboflavin": 0.192, "niacin": 13.112,
         },
     },
     {
@@ -524,6 +594,34 @@ INGREDIENTS = [
 
     # --- Fruits ---
     {
+        # USDA: Apples, raw, with skin (Includes foods for USDA's Food Distribution Program)
+        "name": "Apples",
+        "unit": "100g",
+        "grams": 100,
+        "link": "https://fdc.nal.usda.gov/food-details/171688/nutrients",
+        "nutrients": {
+            "calories": 52, "carbs": 13.81, "fat": 0.17, "protein": 0.26,
+            "sodium": 1.0, "cholesterol": 0.0, "fiber": 2.4,
+            "vitamin_c": 4.6, "calcium": 6.0, "iron": 0.12, "potassium": 107,
+            "magnesium": 5.0, "zinc": 0.04, "b12": 0.0, "folate": 3.0,
+            "thiamine": 0.017, "riboflavin": 0.026, "niacin": 0.091,
+        },
+    },
+    {
+        # USDA: Bananas, raw
+        "name": "Bananas",
+        "unit": "100g",
+        "grams": 100,
+        "link": "https://fdc.nal.usda.gov/food-details/173944/nutrients",
+        "nutrients": {
+            "calories": 89, "carbs": 22.84, "fat": 0.33, "protein": 1.09,
+            "sodium": 1.0, "cholesterol": 0.0, "fiber": 2.6,
+            "vitamin_c": 8.7, "calcium": 5.0, "iron": 0.26, "potassium": 358,
+            "magnesium": 27, "zinc": 0.15, "b12": 0.0, "folate": 20,
+            "thiamine": 0.031, "riboflavin": 0.073, "niacin": 0.665,
+        },
+    },
+    {
         # USDA: Lemons, raw, without peel
         "name": "Lemons",
         "unit": "100g",
@@ -535,6 +633,20 @@ INGREDIENTS = [
             "vitamin_c": 53, "calcium": 26, "iron": 0.6, "potassium": 138,
             "magnesium": 8.0, "zinc": 0.06, "b12": 0.0, "folate": 11,
             "thiamine": 0.04, "riboflavin": 0.02, "niacin": 0.1,
+        },
+    },
+    {
+        # USDA: Oranges, raw, all commercial varieties
+        "name": "Oranges",
+        "unit": "100g",
+        "grams": 100,
+        "link": "https://fdc.nal.usda.gov/food-details/169097/nutrients",
+        "nutrients": {
+            "calories": 47, "carbs": 11.75, "fat": 0.12, "protein": 0.94,
+            "sodium": 0.0, "cholesterol": 0.0, "fiber": 2.4,
+            "vitamin_c": 53.2, "calcium": 40, "iron": 0.1, "potassium": 181,
+            "magnesium": 10, "zinc": 0.07, "b12": 0.0, "folate": 30,
+            "thiamine": 0.087, "riboflavin": 0.04, "niacin": 0.282,
         },
     },
     {
@@ -652,6 +764,20 @@ INGREDIENTS = [
         },
     },
     {
+        # USDA: Carrots, raw
+        "name": "Carrots",
+        "unit": "100g",
+        "grams": 100,
+        "link": "https://fdc.nal.usda.gov/food-details/170393/nutrients",
+        "nutrients": {
+            "calories": 41, "carbs": 9.58, "fat": 0.24, "protein": 0.93,
+            "sodium": 69, "cholesterol": 0.0, "fiber": 2.8,
+            "vitamin_c": 5.9, "calcium": 33, "iron": 0.3, "potassium": 320,
+            "magnesium": 12, "zinc": 0.24, "b12": 0.0, "folate": 19,
+            "thiamine": 0.066, "riboflavin": 0.058, "niacin": 0.983,
+        },
+    },
+    {
         # USDA: Celery, raw
         "name": "Celery",
         "unit": "100g",
@@ -680,6 +806,20 @@ INGREDIENTS = [
         },
     },
     {
+        # USDA: Onions, raw
+        "name": "Onions",
+        "unit": "100g",
+        "grams": 100,
+        "link": "https://fdc.nal.usda.gov/food-details/170000/nutrients",
+        "nutrients": {
+            "calories": 40, "carbs": 9.34, "fat": 0.1, "protein": 1.1,
+            "sodium": 4.0, "cholesterol": 0.0, "fiber": 1.7,
+            "vitamin_c": 7.4, "calcium": 23, "iron": 0.21, "potassium": 146,
+            "magnesium": 10, "zinc": 0.17, "b12": 0.0, "folate": 19,
+            "thiamine": 0.046, "riboflavin": 0.027, "niacin": 0.116,
+        },
+    },
+    {
         # USDA: Potatoes, flesh and skin, raw
         "name": "Potatoes",
         "unit": "100g",
@@ -691,6 +831,34 @@ INGREDIENTS = [
             "vitamin_c": 19.7, "calcium": 12, "iron": 0.81, "potassium": 425,
             "magnesium": 23, "zinc": 0.3, "b12": 0.0, "folate": 15,
             "thiamine": 0.081, "riboflavin": 0.032, "niacin": 1.061,
+        },
+    },
+    {
+        # USDA: Spinach, raw
+        "name": "Spinach",
+        "unit": "100g",
+        "grams": 100,
+        "link": "https://fdc.nal.usda.gov/food-details/168462/nutrients",
+        "nutrients": {
+            "calories": 23, "carbs": 3.63, "fat": 0.39, "protein": 2.86,
+            "sodium": 79, "cholesterol": 0.0, "fiber": 2.2,
+            "vitamin_c": 28.1, "calcium": 99, "iron": 2.71, "potassium": 558,
+            "magnesium": 79, "zinc": 0.53, "b12": 0.0, "folate": 194,
+            "thiamine": 0.078, "riboflavin": 0.189, "niacin": 0.724,
+        },
+    },
+    {
+        # USDA: Sweet potato, raw, unprepared (Includes foods for USDA's Food Distribution Program)
+        "name": "Sweet Potatoes",
+        "unit": "100g",
+        "grams": 100,
+        "link": "https://fdc.nal.usda.gov/food-details/168482/nutrients",
+        "nutrients": {
+            "calories": 86, "carbs": 20.12, "fat": 0.05, "protein": 1.57,
+            "sodium": 55, "cholesterol": 0.0, "fiber": 3.0,
+            "vitamin_c": 2.4, "calcium": 30, "iron": 0.61, "potassium": 337,
+            "magnesium": 25, "zinc": 0.3, "b12": 0.0, "folate": 11,
+            "thiamine": 0.078, "riboflavin": 0.061, "niacin": 0.557,
         },
     },
     {
