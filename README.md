@@ -156,6 +156,8 @@ On load, all entries are validated (malformed entries abort the run with a clear
 
 This repo includes a helper tool, `tools/usda_fetch.py`, which looks up foods in [USDA FoodData Central](https://fdc.nal.usda.gov/) by name and generates ready-to-use INGREDIENTS entries. It always outputs per-100g entries.
 
+> **Heads up:** the USDA API has been flaky (as of Oct 2026): `api.nal.usda.gov` intermittently fails DNS lookups, and requests sometimes bounce with a random `400 Bad Request`. Neither is your key or your network. If a lookup fails, wait a bit and try again.
+
 <details>
 <summary>Importer Setup and Use </summary>
 
